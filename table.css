@@ -18,16 +18,6 @@
   --serif: "EB Garamond", Georgia, "Times New Roman", serif;
   --ease: cubic-bezier(.22, .68, .28, 1);
   color-scheme: dark;
-
-  /* I Ching sage tokens (oracle/chibi.svg.js reads these) */
-  --c-skin: #F8E6D6;
-  --c-hair: #0B0907;
-  --c-robe: #C23B22;
-  --c-robe-dk: #9A2C17;
-  --c-collar: #F1E7D3;
-  --c-cushion: #C99A3E;
-  --c-blush: #E2735D;
-  --c-pin: #E3B95C;
 }
 
 @view-transition { navigation: auto; }
@@ -123,25 +113,6 @@ body {
 .scene[data-target="iching"] .scene__art { transform-origin: 50% 50%; }
 .scene[data-target="saju"] .scene__art { transform-origin: 75% 50%; }
 
-/* I Ching sage, borrowed from oracle/chibi.svg.js */
-.chibi { overflow: visible; }
-.c-mat { fill: none; }
-.c-cushion { fill: var(--c-cushion); }
-.c-robe { fill: var(--c-robe); }
-.c-sleeve { stroke: var(--c-robe-dk); stroke-width: 1.5; }
-.c-collar { fill: none; stroke: var(--c-collar); stroke-width: 5; stroke-linejoin: round; stroke-linecap: round; }
-.c-skin { fill: var(--c-skin); }
-.c-hair { fill: var(--c-hair); }
-.c-pin { stroke: var(--c-pin); stroke-width: 3; stroke-linecap: round; }
-.c-pin-bead { fill: var(--iching); }
-.c-ink { fill: #2B2420; }
-.c-shine { fill: #fff; }
-.c-blush { fill: var(--c-blush); opacity: .55; }
-.c-mouth, .c-hand-line { fill: none; stroke: #2B2420; stroke-width: 2.4; stroke-linecap: round; }
-.c-hand-line { stroke: #D9AE93; stroke-width: 1.6; }
-#chibi-bubble { display: none; }
-#chibi-body { animation: breathe 3.2s ease-in-out infinite; transform-box: fill-box; transform-origin: 50% 100%; }
-
 /* ---------- name plates ---------- */
 
 .plates {
@@ -190,7 +161,6 @@ body {
   75% { transform: scale(.97, 1.05) rotate(-1deg); opacity: .95; }
 }
 @keyframes twinkle { from { opacity: .5; } to { opacity: 1; } }
-@keyframes breathe { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(1.015); } }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }

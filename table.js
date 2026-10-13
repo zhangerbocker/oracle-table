@@ -1,23 +1,10 @@
-// The Oracle Table: seats the I Ching sage, lights whichever reader you lean toward,
-// and moves in on the one you choose before handing you to its page.
-
-import { CHIBI_SVG } from './oracle/chibi.svg.js';
+// The Oracle Table: lights whichever reader you lean toward, and moves in on the one
+// you choose before handing you to its page.
 
 const scene = document.getElementById('scene');
 const plates = [...document.querySelectorAll('.plate')];
 const seats = [...scene.querySelectorAll('.seat')];
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
-
-// The sage is the same character who tosses the coins on /oracle/.
-function seatSage() {
-  const markup = CHIBI_SVG.replace('<svg ', '<svg xmlns="http://www.w3.org/2000/svg" ');
-  const doc = new DOMParser().parseFromString(markup, 'image/svg+xml');
-  const sage = document.importNode(doc.documentElement, true);
-  for (const [name, value] of Object.entries({ x: 395, y: 112, width: 410, height: 333 })) {
-    sage.setAttribute(name, value);
-  }
-  document.getElementById('sage-slot').append(sage);
-}
 
 function setActive(id) {
   if (scene.classList.contains('is-approaching')) return;
@@ -59,4 +46,3 @@ addEventListener('pageshow', () => {
   setActive(null);
 });
 
-seatSage();
