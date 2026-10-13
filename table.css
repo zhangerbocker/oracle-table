@@ -117,10 +117,10 @@ body {
 .scene[data-active="iching"] .candle[data-seat="iching"] .candle__flame,
 .scene[data-active="saju"] .candle[data-seat="saju"] .candle__flame { animation-duration: 1.1s; }
 
-/* the tiger keeps an eye on whoever is choosing */
-.tiger__pupil { transition: transform .4s var(--ease); }
-.scene[data-active="hat"] .tiger__pupil { transform: translateX(-5px); }
-.scene[data-active="iching"] .tiger__pupil { transform: translateX(-4px); }
+/* the fortune-teller keeps an eye on whoever is choosing */
+.seer__eyes { transition: transform .4s var(--ease); }
+.scene[data-active="hat"] .seer__eyes { transform: translateX(-3px); }
+.scene[data-active="iching"] .seer__eyes { transform: translateX(-2px); }
 
 /* approaching: the camera moves in on the chosen seat */
 .scene.is-approaching .scene__art { transform: scale(2.3); filter: brightness(.35); }

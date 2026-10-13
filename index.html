@@ -23,7 +23,7 @@
 
     <div class="scene" id="scene">
       <svg class="scene__art" viewBox="0 0 1200 690" role="img" aria-labelledby="scene-desc">
-        <desc id="scene-desc">A candlelit round table. On the left, a patched wizard's hat on a stool; in the middle, a small sage in a red robe with bronze coins; on the right, a wide-eyed blue tiger.</desc>
+        <desc id="scene-desc">A candlelit round table. On the left, a patched wizard's hat on a stool; in the middle, a small sage in a red robe with bronze coins; on the right, a Korean fortune-teller in a jade and red hanbok.</desc>
         <defs>
           <linearGradient id="g-wall" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0" stop-color="#17142f"/>
@@ -51,21 +51,6 @@
             <stop offset="0" stop-color="#8a6238"/>
             <stop offset="1" stop-color="#4f3520"/>
           </linearGradient>
-          <radialGradient id="g-tiger" cx=".5" cy=".42" r=".62">
-            <stop offset="0" stop-color="#5fb4f4"/>
-            <stop offset=".55" stop-color="#3f7ee0"/>
-            <stop offset="1" stop-color="#2a4fb4"/>
-          </radialGradient>
-          <linearGradient id="g-tiger-body" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0" stop-color="#3a72d6"/>
-            <stop offset="1" stop-color="#1f3a8c"/>
-          </linearGradient>
-          <radialGradient id="g-eye" cx=".5" cy=".5" r=".5">
-            <stop offset="0" stop-color="#fff07a"/>
-            <stop offset=".45" stop-color="#ffc42e"/>
-            <stop offset=".8" stop-color="#ff8a1e"/>
-            <stop offset="1" stop-color="#d9452a"/>
-          </radialGradient>
         </defs>
 
         <!-- the hall -->
@@ -112,57 +97,54 @@
         <g class="seat" data-seat="saju">
           <ellipse class="seat__glow" cx="900" cy="300" rx="210" ry="190" fill="url(#g-glow)"/>
           <g class="seat__figure">
-            <!-- Duffy, the saju page's blue tiger -->
-            <!-- body -->
-            <path d="M800 450 C800 390 840 356 900 354 C960 356 1000 390 1000 450 Z" fill="url(#g-tiger-body)"/>
-            <!-- ears -->
-            <path d="M806 250 C798 214 806 192 822 186 C840 194 856 210 864 226 Z" fill="#3f6fd0"/>
-            <path d="M994 250 C1002 214 994 192 978 186 C960 194 944 210 936 226 Z" fill="#3f6fd0"/>
-            <path d="M814 236 C810 214 814 202 822 199 C832 206 842 216 848 228 Z" fill="#c98aa6"/>
-            <path d="M986 236 C990 214 986 202 978 199 C968 206 958 216 952 228 Z" fill="#c98aa6"/>
-            <!-- head: wide and soft, cheeks fluffed out -->
-            <path d="M900 208 C962 208 1006 228 1018 268 C1030 306 1018 346 982 368 C956 384 928 390 900 390
-                     C872 390 844 384 818 368 C782 346 770 306 782 268 C794 228 838 208 900 208 Z" fill="url(#g-tiger)"/>
-            <path d="M782 300 l-12 6 l12 2 M780 318 l-10 8 l13 -1 M1018 300 l12 6 l-12 2 M1020 318 l10 8 l-13 -1" fill="#3f6fd0"/>
-            <!-- brow markings and forehead dots -->
-            <path d="M826 252 C842 240 864 240 880 250" fill="none" stroke="#5a3d8f" stroke-width="5" stroke-linecap="round" opacity=".75"/>
-            <path d="M974 252 C958 240 936 240 920 250" fill="none" stroke="#5a3d8f" stroke-width="5" stroke-linecap="round" opacity=".75"/>
-            <path d="M846 232 C858 226 872 226 882 232 M954 232 C942 226 928 226 918 232" fill="none" stroke="#5a3d8f" stroke-width="3.5" stroke-linecap="round" opacity=".5"/>
-            <!-- soft fur catching the candlelight -->
-            <g stroke="#9fd2ff" stroke-width="2" stroke-linecap="round" opacity=".35" fill="none">
-              <path d="M860 216 l-4 -8 M884 212 l-2 -9 M916 212 l2 -9 M940 216 l4 -8"/>
-              <path d="M796 282 l-8 -3 M792 300 l-9 0 M1004 282 l8 -3 M1008 300 l9 0"/>
-              <path d="M870 378 l-2 8 M900 382 l0 8 M930 378 l2 8"/>
+            <!-- a Korean fortune-teller in hanbok -->
+            <!-- binyeo hairpin through the low bun, seen either side of her head -->
+            <!-- hair behind the head, and the low bun at the nape -->
+            <circle cx="900" cy="254" r="56" fill="#171210"/>
+            <ellipse cx="900" cy="288" rx="66" ry="22" fill="#171210"/>
+            <path d="M824 286 L976 286" stroke="#c99a3e" stroke-width="5" stroke-linecap="round"/>
+            <circle cx="822" cy="286" r="6" fill="#e3b95c"/>
+            <path d="M976 286 l8 -6 l8 6 l-8 6 Z" fill="#2e8b74" stroke="#e3b95c" stroke-width="2"/>
+            <!-- chima: the high red skirt -->
+            <path d="M828 452 C834 404 862 380 900 378 C938 380 966 404 972 452 Z" fill="#c8323c"/>
+            <path d="M872 384 C870 410 864 432 858 452 M928 384 C930 410 936 432 942 452" stroke="#a52632" stroke-width="2" fill="none"/>
+            <!-- neck -->
+            <path d="M886 296 h28 v36 h-28 Z" fill="#efd6c2"/>
+            <!-- jeogori: short jade jacket -->
+            <path d="M816 424 C814 364 846 334 884 330 L900 362 L916 330 C954 334 986 364 984 424
+                     C968 410 944 396 900 394 C856 396 832 410 816 424 Z" fill="#2e8b74"/>
+            <path d="M884 330 L900 372 L916 330 Z" fill="#267a66"/>
+            <path d="M884 330 L900 372 L916 330" fill="none" stroke="#f4f1ea" stroke-width="7" stroke-linejoin="round"/>
+            <path d="M878 332 L900 384 L922 332" fill="none" stroke="#1f6b58" stroke-width="2.5" stroke-linejoin="round"/>
+            <!-- otgoreum: the long red ribbon -->
+            <path d="M904 382 C920 378 930 386 922 394 C914 400 904 392 904 382 Z" fill="#b5283a"/>
+            <path d="M906 388 C912 404 910 420 916 440 M910 388 C922 404 926 418 934 436" stroke="#b5283a" stroke-width="7" stroke-linecap="round" fill="none"/>
+            <!-- sleeves meeting in front, with saekdong stripes at the cuffs -->
+            <path d="M836 352 C812 384 820 420 876 426 L884 408 C850 402 846 380 858 360 Z" fill="#2e8b74"/>
+            <path d="M964 352 C988 384 980 420 924 426 L916 408 C950 402 954 380 942 360 Z" fill="#2e8b74"/>
+            <g stroke-width="4">
+              <path d="M866 406 L862 426" stroke="#e8503c"/><path d="M872 407 L868 427" stroke="#ffd75e"/><path d="M878 408 L874 428" stroke="#3f8fd4"/>
+              <path d="M934 406 L938 426" stroke="#e8503c"/><path d="M928 407 L932 427" stroke="#ffd75e"/><path d="M922 408 L926 428" stroke="#3f8fd4"/>
             </g>
-            <circle cx="900" cy="226" r="3" fill="#3a2a6a"/>
-            <circle cx="900" cy="239" r="3.5" fill="#3a2a6a"/>
-            <!-- big amber eyes in dark rims, tilted in toward the nose -->
-            <path d="M818 282 C826 260 852 252 876 262 C888 268 892 284 886 298 C872 314 840 314 824 302 C818 296 816 290 818 282 Z" fill="#160d26"/>
-            <path d="M982 282 C974 260 948 252 924 262 C912 268 908 284 914 298 C928 314 960 314 976 302 C982 296 984 290 982 282 Z" fill="#160d26"/>
-            <circle cx="854" cy="284" r="23" fill="url(#g-eye)"/>
-            <circle cx="946" cy="284" r="23" fill="url(#g-eye)"/>
-            <g class="tiger__pupil">
-              <ellipse cx="856" cy="285" rx="4.5" ry="15" fill="#0a0a17"/>
-              <ellipse cx="944" cy="285" rx="4.5" ry="15" fill="#0a0a17"/>
+            <ellipse cx="900" cy="418" rx="22" ry="11" fill="#f8e6d6"/>
+            <path d="M890 416 Q900 422 910 416" fill="none" stroke="#d9ae93" stroke-width="1.6" stroke-linecap="round"/>
+            <!-- face -->
+            <circle cx="900" cy="258" r="48" fill="#f8e6d6"/>
+            <!-- hair: smooth, parted in the middle, drawn back to the bun -->
+            <path d="M851 266 C846 220 872 200 900 200 C928 200 954 220 949 266 C944 240 928 226 904 224 L900 214 L896 224
+                     C872 226 856 240 851 266 Z" fill="#171210"/>
+            <path d="M851 266 C849 276 852 288 858 294 C856 282 856 272 858 262 Z M949 266 C951 276 948 288 942 294 C944 282 944 272 942 262 Z" fill="#171210"/>
+            <circle cx="934" cy="222" r="6" fill="#e8503c"/><circle cx="934" cy="222" r="2.5" fill="#ffd75e"/>
+            <g class="seer__eyes">
+              <ellipse cx="884" cy="266" rx="4.5" ry="5.5" fill="#2b2420"/>
+              <ellipse cx="916" cy="266" rx="4.5" ry="5.5" fill="#2b2420"/>
+              <circle cx="885.5" cy="264" r="1.4" fill="#fff"/>
+              <circle cx="917.5" cy="264" r="1.4" fill="#fff"/>
             </g>
-            <circle cx="862" cy="275" r="5" fill="#fff" opacity=".9"/>
-            <circle cx="952" cy="275" r="5" fill="#fff" opacity=".9"/>
-            <circle cx="848" cy="294" r="2" fill="#fff" opacity=".6"/>
-            <circle cx="940" cy="294" r="2" fill="#fff" opacity=".6"/>
-            <!-- nose -->
-            <path d="M890 318 C890 312 910 312 910 318 C910 324 904 328 900 330 C896 328 890 324 890 318 Z" fill="#a8587a"/>
-            <!-- cheek slits -->
-            <path d="M818 330 C830 326 842 328 850 334 C840 338 828 338 818 330 Z" fill="#160d26"/>
-            <path d="M982 330 C970 326 958 328 950 334 C960 338 972 338 982 330 Z" fill="#160d26"/>
-            <!-- a small toothy grin -->
-            <path d="M856 340 C876 348 924 348 944 340 C936 362 918 370 900 370 C882 370 864 362 856 340 Z" fill="#1d0f1f"/>
-            <path d="M862 343 l5 9 l5 -7 l5 8 l5 -7 l5 8 l5 -7 l4 7 l4 -7 l5 7 l5 -8 l5 7 l5 -8 l5 7 l5 -9 C922 349 878 349 862 343 Z" fill="#f4f1ea"/>
-            <path d="M880 368 l4 -6 l4 6 M912 368 l4 -6 l4 6" fill="#f4f1ea"/>
-            <!-- whiskers -->
-            <g stroke="#e8f0ff" stroke-width="1.2" opacity=".55" stroke-linecap="round" fill="none">
-              <path d="M846 330 C820 322 796 322 770 328"/><path d="M846 336 C818 334 794 338 772 348"/>
-              <path d="M954 330 C980 322 1004 322 1030 328"/><path d="M954 336 C982 334 1006 338 1028 348"/>
-            </g>
+            <path d="M876 254 Q884 250 891 253 M909 253 Q916 250 924 254" fill="none" stroke="#3a2a22" stroke-width="2" stroke-linecap="round"/>
+            <ellipse cx="872" cy="280" rx="8" ry="4.5" fill="#e2735d" opacity=".5"/>
+            <ellipse cx="928" cy="280" rx="8" ry="4.5" fill="#e2735d" opacity=".5"/>
+            <path d="M894 284 Q900 289 906 284" fill="none" stroke="#c23b4a" stroke-width="3" stroke-linecap="round"/>
           </g>
         </g>
 
@@ -230,7 +212,7 @@
       <a class="plate plate--saju" data-seat="saju" href="/korean-saju/">
         <span class="plate__script" lang="ko">사주팔자</span>
         <span class="plate__name">The Four Pillars</span>
-        <span class="plate__line">The exact moment you were born, as eight characters, read aloud by a blue tiger.</span>
+        <span class="plate__line">The exact moment you were born, as eight characters, read by a fortune-teller who knows the old calendar.</span>
         <span class="plate__by">Kept by Haemin</span>
       </a>
     </nav>
