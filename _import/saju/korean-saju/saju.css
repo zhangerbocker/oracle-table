@@ -1,0 +1,1004 @@
+/*
+ * Korean Saju — 사주팔자
+ *
+ * Palette: 단청, the colour scheme of Korean temple eaves — 청(blue-green),
+ * 적(red), 황(yellow), 백(white), 흑(black). It happens to be almost exactly
+ * the reference tiger's palette: electric blue fur and hot amber eyes against
+ * deep dark. Traditional and loud at the same time, which is the brief.
+ *
+ * EVERYTHING is scoped under .saju. No bare element selectors, no html/body
+ * rules — this file loads alongside two other psychics' stylesheets without
+ * colliding. Custom properties are namespaced --saju-* for the same reason.
+ */
+
+.saju {
+  /* 흑 — ground */
+  --saju-ink: #070a11;
+  --saju-ink-2: #0d131f;
+  --saju-panel: #121a2a;
+  --saju-panel-2: #182236;
+  --saju-line: #24304a;
+  --saju-line-soft: #1b2436;
+
+  /* 청 — the tiger's fur */
+  --saju-cyan: #35c7ef;
+  --saju-cyan-deep: #1b6f96;
+  --saju-cyan-glow: rgba(53, 199, 239, 0.4);
+
+  /* 황 / 적 — the tiger's eyes */
+  --saju-amber: #ffab2e;
+  --saju-gold: #ffd75e;
+  --saju-red: #e8503c;
+
+  --saju-text: #f0f4fb;
+  --saju-dim: #9aa8c4;
+  --saju-faint: #63718f;
+
+  /* 오행 */
+  --saju-wood: #4fbd7d;
+  --saju-fire: #e8503c;
+  --saju-earth: #e0a33f;
+  --saju-metal: #b9c4d8;
+  --saju-water: #3f8fd4;
+
+  --saju-radius: 18px;
+  --saju-radius-sm: 11px;
+
+  --saju-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', 'Malgun Gothic',
+    'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+  --saju-serif: 'Gowun Batang', 'Nanum Myeongjo', 'Noto Serif KR', Georgia, serif;
+
+  box-sizing: border-box;
+  display: block;
+  min-height: 100vh;
+  color: var(--saju-text);
+  font-family: var(--saju-sans);
+  font-size: 16px;
+  line-height: 1.62;
+  -webkit-font-smoothing: antialiased;
+  background:
+    radial-gradient(1100px 620px at 50% -8%, rgba(53, 199, 239, 0.16) 0%, transparent 62%),
+    radial-gradient(760px 480px at 88% 8%, rgba(255, 171, 46, 0.11) 0%, transparent 58%),
+    radial-gradient(900px 520px at 6% 92%, rgba(232, 80, 60, 0.09) 0%, transparent 60%),
+    var(--saju-ink);
+}
+
+.saju *,
+.saju *::before,
+.saju *::after { box-sizing: border-box; }
+
+.saju__shell {
+  position: relative;
+  z-index: 1;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: clamp(22px, 5vw, 56px) 16px 90px;
+}
+
+/* ===================================================================== */
+/* Dokkaebi backdrop                                                      */
+/* ===================================================================== */
+
+/*
+ * Goblin-face masks, drawn as SVG (see data/dokkaebi.js). On temple eaves
+ * these face outward to turn away bad luck; here they sit behind the page
+ * doing the same job quietly.
+ */
+.saju__backdrop {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.saju__dok {
+  position: absolute;
+  color: var(--saju-cyan);
+  opacity: 0.07;
+}
+.saju__dok svg { width: 100%; height: 100%; display: block; }
+
+.saju__dok--tl  { top: -7%;  left: -14%;  width: 46vw; max-width: 460px; aspect-ratio: 1; transform: rotate(-13deg); }
+.saju__dok--tr  { top: 12%;  right: -17%; width: 38vw; max-width: 380px; aspect-ratio: 1; transform: rotate(11deg); color: var(--saju-amber); opacity: 0.06; }
+.saju__dok--mid { top: 44%;  left: -20%;  width: 44vw; max-width: 430px; aspect-ratio: 1; transform: rotate(7deg);  color: var(--saju-red); opacity: 0.05; }
+.saju__dok--bl  { bottom: 4%; left: -11%; width: 36vw; max-width: 360px; aspect-ratio: 1; transform: rotate(14deg); }
+.saju__dok--br  { bottom: 16%; right: -15%; width: 42vw; max-width: 420px; aspect-ratio: 1; transform: rotate(-9deg); color: var(--saju-gold); opacity: 0.06; }
+
+@media (max-width: 640px) {
+  /* Two is plenty on a phone; five turns into visual noise. */
+  .saju__dok--mid, .saju__dok--bl, .saju__dok--br { display: none; }
+  .saju__dok { opacity: 0.055; }
+}
+
+/* ===================================================================== */
+/* Shared pieces                                                          */
+/* ===================================================================== */
+
+.saju__panel {
+  position: relative;
+  background: linear-gradient(168deg, var(--saju-panel) 0%, var(--saju-ink-2) 100%);
+  border: 1px solid var(--saju-line);
+  border-radius: var(--saju-radius);
+  padding: clamp(20px, 4vw, 32px);
+  margin-bottom: 18px;
+}
+
+/* 단청 eave stripe — the five colours, as a hairline across the top. */
+.saju__panel::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 2px;
+  border-radius: var(--saju-radius) var(--saju-radius) 0 0;
+  background: linear-gradient(90deg,
+    var(--saju-cyan) 0%, var(--saju-cyan) 20%,
+    var(--saju-red) 20%, var(--saju-red) 40%,
+    var(--saju-gold) 40%, var(--saju-gold) 60%,
+    #e9eef7 60%, #e9eef7 80%,
+    var(--saju-cyan-deep) 80%);
+  opacity: 0.55;
+}
+
+.saju__panel-title {
+  font-family: var(--saju-serif);
+  font-size: clamp(19px, 3.4vw, 23px);
+  margin: 0 0 6px;
+  font-weight: 700;
+}
+
+.saju__panel-note {
+  margin: 0 0 22px;
+  font-size: 13.5px;
+  color: var(--saju-faint);
+}
+
+.saju__body { margin: 0 0 14px; color: #dde4f2; }
+.saju__body:last-child { margin-bottom: 0; }
+
+/* ===================================================================== */
+/* PAGE 1 — the form                                                      */
+/* ===================================================================== */
+
+.saju__hero { text-align: center; margin-bottom: clamp(26px, 5vw, 44px); }
+
+.saju__eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--saju-amber);
+  margin: 0 0 16px;
+  font-weight: 700;
+}
+
+.saju__title {
+  font-family: var(--saju-serif);
+  font-size: clamp(50px, 13vw, 88px);
+  line-height: 1;
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  background: linear-gradient(170deg, #ffffff 0%, var(--saju-gold) 42%, var(--saju-amber) 72%, var(--saju-red) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 28px rgba(255, 171, 46, 0.28));
+}
+
+.saju__title-en {
+  font-size: clamp(12px, 2.3vw, 14px);
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--saju-cyan);
+  margin: 14px 0 0;
+  font-weight: 600;
+}
+
+.saju__lede {
+  margin: 20px auto 0;
+  max-width: 50ch;
+  color: #cdd6e8;
+  font-size: clamp(14.5px, 2.5vw, 16.5px);
+  text-align: left;
+}
+
+.saju__lede--small {
+  margin-top: 12px;
+  font-size: clamp(13px, 2.2vw, 14.5px);
+  color: var(--saju-faint);
+}
+
+.saju__fields {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(185px, 1fr));
+}
+
+.saju__field { display: flex; flex-direction: column; gap: 7px; min-width: 0; }
+.saju__field--wide { grid-column: 1 / -1; }
+
+.saju__label {
+  font-size: 11.5px;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--saju-cyan);
+  font-weight: 700;
+}
+
+.saju__input,
+.saju__select {
+  width: 100%;
+  padding: 12px 14px;
+  background: var(--saju-ink);
+  border: 1px solid var(--saju-line);
+  border-radius: var(--saju-radius-sm);
+  color: var(--saju-text);
+  font-family: inherit;
+  font-size: 15.5px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.saju__input:focus,
+.saju__select:focus {
+  outline: none;
+  border-color: var(--saju-cyan);
+  box-shadow: 0 0 0 3px var(--saju-cyan-glow);
+}
+
+.saju__input::-webkit-calendar-picker-indicator { filter: invert(0.8); cursor: pointer; }
+
+.saju__select {
+  appearance: none;
+  cursor: pointer;
+  padding-right: 34px;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--saju-cyan) 50%),
+    linear-gradient(135deg, var(--saju-cyan) 50%, transparent 50%);
+  background-position: calc(100% - 18px) 50%, calc(100% - 13px) 50%;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+}
+.saju__select optgroup,
+.saju__select option { background: var(--saju-ink-2); color: var(--saju-text); }
+
+/* Segmented control, used for 성별 */
+.saju__segmented { display: flex; gap: 8px; }
+.saju__seg {
+  flex: 1;
+  padding: 12px 10px;
+  background: var(--saju-ink);
+  border: 1px solid var(--saju-line);
+  border-radius: var(--saju-radius-sm);
+  color: var(--saju-dim);
+  font: inherit;
+  font-size: 14.5px;
+  cursor: pointer;
+  transition: all 0.16s ease;
+}
+.saju__seg:hover { border-color: var(--saju-cyan-deep); color: var(--saju-text); }
+.saju__seg[aria-pressed="true"] {
+  border-color: var(--saju-cyan);
+  background: rgba(53, 199, 239, 0.14);
+  color: var(--saju-cyan);
+  font-weight: 600;
+}
+.saju__seg:focus-visible { outline: 2px solid var(--saju-cyan); outline-offset: 2px; }
+
+.saju__check {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 16px;
+  font-size: 14px;
+  color: var(--saju-dim);
+  cursor: pointer;
+  user-select: none;
+}
+.saju__check input { width: 16px; height: 16px; accent-color: var(--saju-cyan); cursor: pointer; flex: none; }
+
+.saju__field--disabled { opacity: 0.38; }
+
+.saju__submit {
+  width: 100%;
+  margin-top: 24px;
+  padding: 17px 20px;
+  border: none;
+  border-radius: var(--saju-radius-sm);
+  background: linear-gradient(135deg, var(--saju-amber) 0%, var(--saju-red) 100%);
+  color: #1a0e05;
+  font-family: var(--saju-serif);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  box-shadow: 0 10px 34px -12px rgba(255, 171, 46, 0.6);
+  transition: transform 0.1s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+.saju__submit:hover { filter: brightness(1.08); box-shadow: 0 14px 40px -12px rgba(255, 171, 46, 0.8); }
+.saju__submit:active { transform: translateY(1px); }
+.saju__submit:focus-visible { outline: 3px solid var(--saju-gold); outline-offset: 3px; }
+
+.saju__error {
+  margin: 16px 0 0;
+  padding: 12px 15px;
+  border-radius: var(--saju-radius-sm);
+  background: rgba(232, 80, 60, 0.14);
+  border: 1px solid rgba(232, 80, 60, 0.46);
+  color: #ffc0b5;
+  font-size: 14px;
+}
+
+/* ===================================================================== */
+/* SCREEN 2 — the tiger holds your letter                                 */
+/* ===================================================================== */
+
+.saju__wait { text-align: center; padding-top: clamp(8px, 3vw, 28px); }
+
+.saju__duffy {
+  position: relative;
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+  border-radius: var(--saju-radius);
+  overflow: hidden;
+  border: 1px solid var(--saju-line);
+  box-shadow: 0 26px 70px -24px rgba(0, 0, 0, 0.95);
+}
+
+.saju__duffy-img { display: block; width: 100%; height: auto; }
+
+/*
+ * The letter sits on the tongue. Coordinates come from scanning the image for
+ * the card, so the hotspot tracks the artwork at any size.
+ */
+.saju__letter {
+  position: absolute;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  background: transparent;
+  cursor: default;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease, transform 0.18s ease;
+}
+
+.saju__letter:disabled { pointer-events: none; }
+
+/* While waiting: a slow pulse, so it reads as "not yet". */
+.saju__wait:not(.saju__wait--ready) .saju__letter {
+  animation: saju-letter-wait 2.1s ease-in-out infinite;
+}
+@keyframes saju-letter-wait {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 215, 94, 0); }
+  50%      { box-shadow: 0 0 22px 3px rgba(255, 215, 94, 0.3); }
+}
+
+/* Once ready: it glows and invites a click. */
+.saju__wait--ready .saju__letter {
+  cursor: pointer;
+  border-color: var(--saju-gold);
+  animation: saju-letter-ready 1.35s ease-in-out infinite;
+}
+@keyframes saju-letter-ready {
+  0%, 100% { box-shadow: 0 0 20px 4px rgba(255, 215, 94, 0.55); transform: scale(1); }
+  50%      { box-shadow: 0 0 40px 12px rgba(255, 215, 94, 0.9); transform: scale(1.045); }
+}
+.saju__wait--ready .saju__letter:hover { transform: scale(1.08); }
+.saju__letter:focus-visible { outline: 3px solid var(--saju-cyan); outline-offset: 4px; }
+
+.saju__wait-status {
+  margin: 26px 0 0;
+  font-family: var(--saju-serif);
+  font-size: clamp(19px, 3.6vw, 25px);
+  font-weight: 700;
+  color: var(--saju-gold);
+}
+.saju__wait--ready .saju__wait-status { color: var(--saju-amber); }
+.saju__wait--failed .saju__wait-status { color: var(--saju-red); }
+
+/* Progress bar + countdown. Both are estimates; the letter unlocks on the
+   actual response, never on the timer. */
+.saju__wait-bar {
+  width: min(320px, 70%);
+  height: 4px;
+  margin: 16px auto 0;
+  background: var(--saju-ink);
+  border: 1px solid var(--saju-line);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.saju__wait-bar-fill {
+  height: 100%;
+  width: 0;
+  border-radius: 99px;
+  background: linear-gradient(90deg, var(--saju-cyan), var(--saju-amber));
+  transition: width 0.3s linear;
+}
+.saju__wait--ready .saju__wait-bar-fill { background: var(--saju-gold); }
+.saju__wait--failed .saju__wait-bar-fill { background: var(--saju-red); }
+
+.saju__wait-count {
+  margin: 10px 0 0;
+  font-size: 13px;
+  color: var(--saju-faint);
+  font-variant-numeric: tabular-nums;
+  min-height: 1em;
+}
+
+.saju__wait-hint {
+  margin: 8px 0 0;
+  font-size: 14.5px;
+  color: var(--saju-dim);
+}
+.saju__wait--ready .saju__wait-hint { color: var(--saju-cyan); font-weight: 600; }
+
+.saju__wait-recovery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.saju__skip {
+  padding: 11px 22px;
+  background: transparent;
+  border: 1px solid var(--saju-line);
+  border-radius: var(--saju-radius-sm);
+  color: var(--saju-faint);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  transition: color 0.16s ease, border-color 0.16s ease;
+}
+.saju__skip:hover { color: var(--saju-dim); border-color: var(--saju-dim); }
+
+@media (prefers-reduced-motion: reduce) {
+  .saju__letter { animation: none !important; }
+  .saju__wait--ready .saju__letter { box-shadow: 0 0 26px 6px rgba(255, 215, 94, 0.7); }
+}
+
+/* ===================================================================== */
+/* SCREEN 3 — results                                                     */
+/* ===================================================================== */
+
+.saju__screen { animation: saju-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+@keyframes saju-in {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.saju__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+  padding: 9px 16px 9px 12px;
+  background: transparent;
+  border: 1px solid var(--saju-line);
+  border-radius: 99px;
+  color: var(--saju-dim);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.16s ease;
+}
+.saju__back:hover { border-color: var(--saju-cyan); color: var(--saju-cyan); }
+
+/* --- Soul animal hero ------------------------------------------------ */
+
+.saju__soul {
+  text-align: center;
+  padding: clamp(24px, 5vw, 38px) clamp(18px, 4vw, 34px) clamp(28px, 5vw, 40px);
+  background:
+    radial-gradient(620px 320px at 50% 0%, rgba(53, 199, 239, 0.16), transparent 70%),
+    linear-gradient(168deg, var(--saju-panel-2) 0%, var(--saju-ink-2) 100%);
+}
+
+.saju__soul-frame {
+  /* The landscape is half the picture, so show it big. */
+  width: min(100%, clamp(240px, 74vw, 380px));
+  margin: 0 auto 22px;
+  aspect-ratio: var(--sprite-aspect, 1);
+  /* Plain rounded corners. An arch mask cut into the painting; these are
+     finished compositions and are left whole. */
+  border-radius: 16px;
+  border: 2px solid var(--saju-amber);
+  background-image: var(--sprite);
+  /* Size and position are measured per cell — see data/soul-animals.js. */
+  background-size: var(--sprite-w) var(--sprite-h);
+  background-position: var(--sprite-x) var(--sprite-y);
+  background-repeat: no-repeat;
+  background-origin: border-box;
+  background-clip: border-box;
+  box-shadow:
+    0 0 0 7px rgba(255, 171, 46, 0.09),
+    0 20px 54px -16px rgba(0, 0, 0, 0.9);
+}
+
+/* Shown when that pillar's artwork has not been drawn yet. */
+.saju__soul-frame--pending {
+  display: grid;
+  place-items: center;
+  background-image: none;
+  background: repeating-linear-gradient(135deg,
+    rgba(53, 199, 239, 0.07) 0 11px, transparent 11px 22px), var(--saju-ink);
+  border-style: dashed;
+  border-color: var(--saju-cyan-deep);
+}
+.saju__soul-frame--pending span {
+  font-size: clamp(46px, 12vw, 68px);
+  filter: grayscale(0.25) drop-shadow(0 0 18px var(--saju-cyan-glow));
+}
+
+.saju__soul-eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--saju-cyan);
+  font-weight: 700;
+  margin: 0 0 20px;
+}
+
+.saju__soul-animal {
+  font-family: var(--saju-serif);
+  font-size: clamp(36px, 8.5vw, 54px);
+  line-height: 1;
+  margin: 0 0 8px;
+  font-weight: 700;
+  color: var(--saju-gold);
+  letter-spacing: 0.03em;
+  text-shadow: 0 0 36px rgba(255, 215, 94, 0.3);
+}
+
+.saju__soul-name {
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--saju-cyan);
+  margin: 0 0 20px;
+  font-weight: 700;
+}
+
+.saju__soul-line {
+  font-family: var(--saju-serif);
+  font-size: clamp(16.5px, 3.3vw, 20px);
+  line-height: 1.6;
+  color: #eaf1fb;
+  margin: 0 auto;
+  max-width: 34ch;
+}
+
+.saju__soul-pending-note {
+  margin: 18px auto 0;
+  max-width: 36ch;
+  font-size: 12.5px;
+  color: var(--saju-faint);
+}
+
+/* --- The eight characters -------------------------------------------- */
+
+.saju__pillars { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(6px, 1.5vw, 12px); }
+
+.saju__pillar {
+  text-align: center;
+  padding: clamp(11px, 2.4vw, 16px) 5px;
+  background: var(--saju-ink);
+  border: 1px solid var(--saju-line-soft);
+  border-radius: var(--saju-radius-sm);
+}
+.saju__pillar--day {
+  border-color: var(--saju-amber);
+  background: linear-gradient(180deg, rgba(255, 171, 46, 0.11), var(--saju-ink));
+}
+
+.saju__pillar-kind {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--saju-faint);
+  margin-bottom: 9px;
+}
+.saju__pillar--day .saju__pillar-kind { color: var(--saju-amber); font-weight: 700; }
+
+.saju__char {
+  font-family: var(--saju-serif);
+  font-size: clamp(25px, 6.2vw, 38px);
+  line-height: 1.14;
+  font-weight: 700;
+  display: block;
+  color: var(--saju-el, var(--saju-text));
+}
+
+.saju__pillar-sub { font-size: 10.5px; color: var(--saju-dim); margin-top: 7px; line-height: 1.35; }
+.saju__pillar-sub + .saju__pillar-sub { margin-top: 1px; color: var(--saju-faint); }
+
+/* Divider between the characters and what they add up to. */
+.saju__chart-divider {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 26px 0 18px;
+}
+.saju__chart-divider::before,
+.saju__chart-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--saju-line), transparent);
+}
+.saju__chart-divider span {
+  font-size: 11px;
+  letter-spacing: 0.17em;
+  text-transform: uppercase;
+  color: var(--saju-faint);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.saju__chart-summary { margin-top: 18px; color: #dde4f2; }
+.saju__chart-prose {
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid var(--saju-line-soft);
+}
+
+/* --- Element bars ----------------------------------------------------- */
+
+.saju__balance { display: flex; flex-direction: column; gap: 11px; }
+
+.saju__bar-row {
+  display: grid;
+  grid-template-columns: 76px 1fr 26px;
+  align-items: center;
+  gap: 12px;
+  font-size: 13.5px;
+}
+.saju__bar-name { color: var(--saju-dim); white-space: nowrap; }
+.saju__bar-name b { color: var(--saju-el); font-weight: 700; }
+
+.saju__bar-track {
+  height: 9px;
+  background: var(--saju-ink);
+  border-radius: 99px;
+  overflow: hidden;
+  border: 1px solid var(--saju-line-soft);
+}
+.saju__bar-fill {
+  height: 100%;
+  border-radius: 99px;
+  background: var(--saju-el);
+  width: 0;
+  box-shadow: 0 0 14px -2px var(--saju-el);
+  transition: width 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.saju__bar-value {
+  text-align: right;
+  color: var(--saju-dim);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+.saju__bar-row--zero .saju__bar-name,
+.saju__bar-row--zero .saju__bar-value { color: var(--saju-faint); }
+
+.saju__chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+.saju__chip {
+  font-size: 12.5px;
+  padding: 7px 13px;
+  border-radius: 99px;
+  background: var(--saju-ink);
+  border: 1px solid var(--saju-line);
+  color: var(--saju-dim);
+}
+.saju__chip b { color: var(--saju-el, var(--saju-cyan)); font-weight: 700; }
+
+/* --- Themes ----------------------------------------------------------- */
+
+.saju__theme {
+  position: relative;
+  padding: 18px 0 18px 42px;
+  border-top: 1px solid var(--saju-line-soft);
+}
+.saju__theme:first-of-type { border-top: none; padding-top: 4px; }
+.saju__theme:last-of-type { padding-bottom: 0; }
+
+.saju__theme-no {
+  position: absolute;
+  left: 0;
+  top: 18px;
+  font-family: var(--saju-serif);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--saju-cyan-deep);
+  font-variant-numeric: tabular-nums;
+}
+.saju__theme:first-of-type .saju__theme-no { top: 4px; }
+
+.saju__theme-title {
+  font-family: var(--saju-serif);
+  font-size: 18.5px;
+  margin: 0 0 9px;
+  color: var(--saju-gold);
+  font-weight: 700;
+}
+
+/* --- A panel for the good news ---------------------------------------- */
+
+.saju__panel--good {
+  background:
+    radial-gradient(520px 240px at 10% 0%, rgba(79, 189, 125, 0.12), transparent 70%),
+    linear-gradient(168deg, var(--saju-panel) 0%, var(--saju-ink-2) 100%);
+  border-color: color-mix(in srgb, var(--saju-wood) 42%, var(--saju-line));
+}
+.saju__panel--good .saju__panel-title { color: var(--saju-wood); }
+
+/* --- Job lists --------------------------------------------------------- */
+
+.saju__jobs-group { margin-top: 20px; }
+
+.saju__jobs-head {
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.saju__jobs-head--fit { color: var(--saju-wood); }
+.saju__jobs-head--avoid { color: var(--saju-red); }
+
+.saju__jobs { margin: 0; padding: 0; list-style: none; display: grid; gap: 9px; }
+
+.saju__jobs li {
+  position: relative;
+  padding: 11px 14px 11px 34px;
+  background: var(--saju-ink);
+  border: 1px solid var(--saju-line-soft);
+  border-radius: var(--saju-radius-sm);
+  font-size: 14.5px;
+  color: #dde4f2;
+  line-height: 1.5;
+}
+.saju__jobs li::before {
+  position: absolute;
+  left: 13px;
+  top: 11px;
+  font-weight: 700;
+}
+.saju__jobs--fit li::before { content: '\2713'; color: var(--saju-wood); }
+.saju__jobs--avoid li::before { content: '\2715'; color: var(--saju-red); }
+/* --- Chart score ------------------------------------------------------ */
+
+.saju__score {
+  display: flex;
+  align-items: center;
+  gap: clamp(16px, 3.5vw, 26px);
+  padding: clamp(16px, 3vw, 22px);
+  margin-bottom: 22px;
+  border-radius: var(--saju-radius-sm);
+  background: var(--saju-ink);
+  border: 1px solid var(--saju-line);
+  border-left: 3px solid var(--saju-tone, var(--saju-cyan));
+}
+.saju__score--high { --saju-tone: var(--saju-gold); }
+.saju__score--good { --saju-tone: var(--saju-wood); }
+.saju__score--mid  { --saju-tone: var(--saju-cyan); }
+.saju__score--low  { --saju-tone: var(--saju-amber); }
+
+.saju__score-ring {
+  flex: none;
+  width: clamp(72px, 17vw, 92px);
+  aspect-ratio: 1;
+  display: grid;
+  place-content: center;
+  text-align: center;
+  border-radius: 50%;
+  border: 2px solid var(--saju-tone);
+  box-shadow: inset 0 0 26px -8px var(--saju-tone);
+}
+.saju__score-num {
+  display: block;
+  font-family: var(--saju-serif);
+  font-size: clamp(28px, 7vw, 36px);
+  font-weight: 700;
+  line-height: 1;
+  color: var(--saju-tone);
+}
+.saju__score-out { display: block; font-size: 10.5px; color: var(--saju-faint); margin-top: 3px; }
+
+.saju__score-text { min-width: 0; }
+.saju__score-label {
+  font-family: var(--saju-serif);
+  font-size: clamp(16px, 3vw, 19px);
+  font-weight: 700;
+  color: var(--saju-tone);
+  margin-bottom: 5px;
+}
+.saju__score-note { margin: 0; font-size: 14px; color: #d6ddec; line-height: 1.55; }
+.saju__score-caveat { margin: 9px 0 0; font-size: 12px; color: var(--saju-faint); line-height: 1.5; }
+
+@media (max-width: 420px) {
+  .saju__score { flex-direction: column; text-align: center; gap: 14px; }
+}
+
+/* --- Highlighted phrases ---------------------------------------------- */
+
+.saju__mark {
+  background: linear-gradient(180deg, transparent 58%, rgba(255, 171, 46, 0.26) 58%);
+  color: #fff3dd;
+  font-weight: 600;
+  padding: 0 1px;
+  border-radius: 2px;
+}
+
+.saju__chart-lead {
+  font-size: clamp(15.5px, 2.6vw, 17px);
+  line-height: 1.68;
+  color: #e6ecf7;
+}
+
+.saju__panel-note--centred { text-align: center; margin: -6px 0 16px; }
+
+/* --- Collapsible 세부운 ----------------------------------------------- */
+
+.saju__more { margin-bottom: 18px; }
+
+.saju__more summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 17px clamp(18px, 4vw, 26px);
+  background: linear-gradient(168deg, var(--saju-panel) 0%, var(--saju-ink-2) 100%);
+  border: 1px solid var(--saju-line);
+  border-radius: var(--saju-radius);
+  font-family: var(--saju-serif);
+  font-size: 17.5px;
+  font-weight: 700;
+  transition: border-color 0.18s ease, background 0.18s ease;
+}
+.saju__more summary::-webkit-details-marker { display: none; }
+.saju__more summary:hover { border-color: var(--saju-cyan); }
+.saju__more summary:focus-visible { outline: 2px solid var(--saju-cyan); outline-offset: 2px; }
+
+.saju__more-hint {
+  font-family: var(--saju-sans);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--saju-cyan);
+  white-space: nowrap;
+}
+.saju__more[open] summary {
+  border-radius: var(--saju-radius) var(--saju-radius) 0 0;
+  border-bottom-color: transparent;
+  color: var(--saju-cyan);
+}
+.saju__more[open] .saju__more-hint::after { content: ' \2212'; }
+.saju__more:not([open]) .saju__more-hint::after { content: ' +'; }
+
+.saju__more-body {
+  padding: 4px clamp(18px, 4vw, 26px) clamp(20px, 4vw, 26px);
+  background: linear-gradient(168deg, var(--saju-panel) 0%, var(--saju-ink-2) 100%);
+  border: 1px solid var(--saju-line);
+  border-top: none;
+  border-radius: 0 0 var(--saju-radius) var(--saju-radius);
+}
+
+.saju__chapter { margin-bottom: 16px; }
+.saju__chapter:last-child { margin-bottom: 0; }
+.saju__chapter-label {
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--saju-amber);
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+/* --- Advice ----------------------------------------------------------- */
+
+.saju__advice { display: grid; gap: 13px; }
+
+.saju__advice-item {
+  padding: 15px 18px;
+  border-radius: var(--saju-radius-sm);
+  background: var(--saju-ink);
+  border-left: 3px solid var(--saju-accent, var(--saju-cyan));
+}
+.saju__advice-label {
+  font-size: 11px;
+  letter-spacing: 0.17em;
+  text-transform: uppercase;
+  color: var(--saju-accent, var(--saju-cyan));
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.saju__truth {
+  margin-top: 6px;
+  padding: clamp(22px, 4.5vw, 32px);
+  border-radius: var(--saju-radius);
+  text-align: center;
+  background:
+    radial-gradient(500px 220px at 50% 100%, rgba(255, 171, 46, 0.16), transparent 70%),
+    var(--saju-ink);
+  border: 1px solid var(--saju-amber);
+}
+.saju__truth p {
+  font-family: var(--saju-serif);
+  font-size: clamp(18px, 3.8vw, 24px);
+  line-height: 1.5;
+  margin: 0;
+  color: var(--saju-gold);
+}
+
+/* --- Loading ---------------------------------------------------------- */
+
+.saju__loading { text-align: center; padding: clamp(30px, 6vw, 48px) 20px; }
+
+.saju__spinner {
+  width: 46px; height: 46px;
+  margin: 0 auto 20px;
+  border-radius: 50%;
+  border: 3px solid var(--saju-line);
+  border-top-color: var(--saju-amber);
+  border-right-color: var(--saju-cyan);
+  animation: saju-spin 0.95s linear infinite;
+}
+@keyframes saju-spin { to { transform: rotate(360deg); } }
+
+.saju__loading p { margin: 0; color: var(--saju-dim); font-size: 14.5px; }
+.saju__loading small { display: block; margin-top: 7px; color: var(--saju-faint); font-size: 12.5px; }
+
+.saju__retry {
+  margin-top: 16px;
+  padding: 11px 22px;
+  background: transparent;
+  border: 1px solid var(--saju-cyan);
+  border-radius: var(--saju-radius-sm);
+  color: var(--saju-cyan);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+.saju__retry:hover { background: rgba(53, 199, 239, 0.12); }
+
+/* --- Footer ----------------------------------------------------------- */
+
+.saju__notes { margin-top: 4px; }
+.saju__note {
+  display: flex;
+  gap: 10px;
+  font-size: 12.8px;
+  color: var(--saju-faint);
+  line-height: 1.56;
+  margin-bottom: 10px;
+}
+.saju__note:last-child { margin-bottom: 0; }
+.saju__note::before { content: '\203B'; color: var(--saju-cyan-deep); flex: none; }
+
+.saju__footer {
+  margin-top: 26px;
+  text-align: center;
+  font-size: 12.5px;
+  color: var(--saju-faint);
+  line-height: 1.75;
+}
+
+/* --- Motion & narrow screens ------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  .saju__screen { animation: none; }
+  .saju__bar-fill { transition: none; }
+  .saju__spinner { animation-duration: 2.4s; }
+}
+
+@media (max-width: 420px) {
+  .saju__bar-row { grid-template-columns: 62px 1fr 22px; gap: 9px; font-size: 12.5px; }
+  .saju__pillars { gap: 5px; }
+  .saju__pillar { padding: 10px 2px; }
+  .saju__more summary { font-size: 16px; padding: 15px 16px; }
+}

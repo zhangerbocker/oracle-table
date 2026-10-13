@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Four Pillars &middot; The Korean Birth Chart</title>
+  <meta name="description" content="A Korean Four Pillars reading, calculated from real astronomy.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Nanum+Myeongjo:wght@400;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./saju.css">
+  <style>
+    /* Host-page only. The psychic itself owns nothing outside .saju */
+    html, body { margin: 0; padding: 0; background: #070a11; min-height: 100%; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="module">
+    import { mount } from './saju-page.js';
+    mount(document.getElementById('root'));
+  </script>
+</body>
+</html>
