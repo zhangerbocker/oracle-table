@@ -11,10 +11,19 @@
   <link rel="stylesheet" href="./saju.css">
   <style>
     /* Host-page only. The psychic itself owns nothing outside .saju */
-    html, body { margin: 0; padding: 0; background: #070a11; min-height: 100%; }
+    html, body { margin: 0; padding: 0; background: #0a0a17; min-height: 100%; }
+    /* Back to the Oracle Table landing page. */
+    .table-back {
+      position: absolute; top: 18px; left: 16px; z-index: 2;
+      padding: 6px 8px; border-radius: 6px;
+      font: italic 14px/1 'Gowun Batang', Georgia, serif;
+      color: #9aa8c4; text-decoration: none;
+    }
+    .table-back:hover, .table-back:focus-visible { color: #f0f4fb; background: rgba(53, 199, 239, 0.1); }
   </style>
 </head>
 <body>
+  <a class="table-back" href="/">← The table</a>
   <div id="root"></div>
 
   <script type="module">

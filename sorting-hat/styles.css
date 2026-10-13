@@ -42,6 +42,23 @@ body {
   overflow-x: hidden;
 }
 
+/* Back to the Oracle Table landing page. */
+.table-back {
+  position: absolute;
+  top: 18px;
+  left: 16px;
+  z-index: 2;
+  padding: 6px 8px;
+  border-radius: 6px;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 0.9rem;
+  color: var(--muted);
+  text-decoration: none;
+}
+.table-back:hover,
+.table-back:focus-visible { color: var(--gold-soft); background: rgba(227, 185, 92, 0.08); }
+
 /* ---------- Atmosphere ---------- */
 
 .sky {

@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Oracle Table</title>
+  <meta name="description" content="Three readers share one candlelit table: the Sorting Hat, the Three Coins Oracle of the I Ching, and a Korean Four Pillars reading.">
+  <meta name="theme-color" content="#0b0a1a">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🕯️</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Gowun+Batang:wght@400;700&display=swap">
+  <link rel="stylesheet" href="table.css">
+  <script type="module" src="table.js"></script>
+</head>
+<body>
+  <main class="hall">
+    <header class="hall__intro">
+      <p class="hall__eyebrow">Three readers · one table</p>
+      <h1 class="hall__title">The Oracle Table</h1>
+      <p class="hall__lede">Pull up a chair. Each reader sees your fate a different way. Choose one and come closer.</p>
+    </header>
+
+    <div class="scene" id="scene">
+      <svg class="scene__art" viewBox="0 0 1200 690" role="img" aria-labelledby="scene-desc">
+        <desc id="scene-desc">A candlelit round table. On the left, a patched wizard's hat on a stool; in the middle, a small sage in a red robe with bronze coins; on the right, a blue tiger in a hanbok jacket.</desc>
+        <defs>
+          <linearGradient id="g-wall" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#17142f"/>
+            <stop offset="1" stop-color="#0b0a1a"/>
+          </linearGradient>
+          <radialGradient id="g-window" cx=".5" cy=".35" r=".7">
+            <stop offset="0" stop-color="#2a2552"/>
+            <stop offset="1" stop-color="#110f26"/>
+          </radialGradient>
+          <radialGradient id="g-glow">
+            <stop offset="0" stop-color="#f5c66a" stop-opacity=".55"/>
+            <stop offset=".45" stop-color="#e3a64a" stop-opacity=".16"/>
+            <stop offset="1" stop-color="#e3a64a" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="g-floor" cx=".5" cy="0" r=".8">
+            <stop offset="0" stop-color="#2a1f1a" stop-opacity=".9"/>
+            <stop offset="1" stop-color="#0b0a1a" stop-opacity="0"/>
+          </radialGradient>
+          <linearGradient id="g-tabletop" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#4a2f1d"/>
+            <stop offset=".55" stop-color="#6b4429"/>
+            <stop offset="1" stop-color="#7a4f30"/>
+          </linearGradient>
+          <linearGradient id="g-hat" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#8a6238"/>
+            <stop offset="1" stop-color="#4f3520"/>
+          </linearGradient>
+          <linearGradient id="g-tiger" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#4f7fe0"/>
+            <stop offset="1" stop-color="#2f4fb0"/>
+          </linearGradient>
+          <radialGradient id="g-eye" cx=".5" cy=".5" r=".5">
+            <stop offset="0" stop-color="#ffd75e"/>
+            <stop offset=".7" stop-color="#ffab2e"/>
+            <stop offset="1" stop-color="#e8503c"/>
+          </radialGradient>
+        </defs>
+
+        <!-- the hall -->
+        <rect width="1200" height="690" fill="url(#g-wall)"/>
+        <g class="scene__window">
+          <path d="M470 330 V150 A130 130 0 0 1 730 150 V330 Z" fill="url(#g-window)" stroke="#2b2546" stroke-width="10"/>
+          <path d="M600 30 V330 M470 200 H730" stroke="#2b2546" stroke-width="6"/>
+          <g class="scene__stars" fill="#fff">
+            <circle cx="510" cy="120" r="1.6"/><circle cx="560" cy="80" r="1.2"/><circle cx="650" cy="110" r="1.8"/>
+            <circle cx="700" cy="170" r="1.1"/><circle cx="530" cy="250" r="1.3"/><circle cx="680" cy="270" r="1.5"/>
+            <circle cx="620" cy="235" r="1"/><circle cx="575" cy="165" r="1"/>
+          </g>
+          <path d="M676 62 a22 22 0 1 0 14 38 a17 17 0 1 1 -14 -38 Z" fill="#f5dc9a" opacity=".85"/>
+        </g>
+        <rect y="420" width="1200" height="270" fill="url(#g-floor)"/>
+
+        <!-- seats, back to front: glow, then the reader -->
+        <g class="seat" data-seat="hat">
+          <ellipse class="seat__glow" cx="300" cy="300" rx="210" ry="190" fill="url(#g-glow)"/>
+          <g class="seat__figure">
+            <!-- stool top, peeking over the table -->
+            <ellipse cx="300" cy="418" rx="84" ry="16" fill="#3a2414"/>
+            <!-- the hat -->
+            <ellipse cx="300" cy="402" rx="118" ry="26" fill="#3f2a18"/>
+            <path d="M206 400 C214 352 232 300 246 262 C252 232 238 210 222 196 C212 188 214 178 228 180 C262 186 284 214 292 246
+                     C304 286 340 330 392 398 C350 416 250 418 206 400 Z" fill="url(#g-hat)"/>
+            <path d="M206 400 C250 418 350 416 392 398" fill="none" stroke="#e3b95c" stroke-width="2.5" opacity=".7"/>
+            <!-- patches and folds -->
+            <path d="M262 300 l26 -6 l4 22 l-26 6 Z" fill="#6b4a2b" stroke="#2f1f12" stroke-width="1.5" stroke-dasharray="3 3"/>
+            <path d="M246 262 C258 270 276 268 290 258" fill="none" stroke="#3a2616" stroke-width="3" stroke-linecap="round"/>
+            <!-- face: brows, eyes, mouth -->
+            <path d="M246 338 C256 326 272 326 282 336" fill="none" stroke="#2a1b10" stroke-width="5" stroke-linecap="round"/>
+            <path d="M312 336 C322 324 340 326 348 338" fill="none" stroke="#2a1b10" stroke-width="5" stroke-linecap="round"/>
+            <path d="M240 372 C268 392 330 392 362 368 C334 380 270 382 240 372 Z" fill="#1d120a"/>
+            <path d="M228 196 C238 200 244 206 246 214" fill="none" stroke="#e3b95c" stroke-width="2" opacity=".55" stroke-linecap="round"/>
+          </g>
+        </g>
+
+        <g class="seat" data-seat="iching">
+          <ellipse class="seat__glow" cx="600" cy="300" rx="210" ry="190" fill="url(#g-glow)"/>
+          <g class="seat__figure" id="sage-slot"></g>
+        </g>
+
+        <g class="seat" data-seat="saju">
+          <ellipse class="seat__glow" cx="900" cy="300" rx="210" ry="190" fill="url(#g-glow)"/>
+          <g class="seat__figure">
+            <!-- hanbok jeogori: jade jacket, white collar band, red ribbon -->
+            <path d="M800 430 C800 384 836 358 900 356 C964 358 1000 384 1000 430 Z" fill="#2e8b74"/>
+            <path d="M870 358 L900 404 L930 358" fill="none" stroke="#f0f4fb" stroke-width="9" stroke-linejoin="round"/>
+            <path d="M900 404 C886 412 878 424 884 432 M900 404 C916 410 926 424 920 432" fill="none" stroke="#e8503c" stroke-width="7" stroke-linecap="round"/>
+            <circle cx="900" cy="404" r="6" fill="#e8503c"/>
+            <path d="M800 430 C806 404 820 390 836 384" fill="none" stroke="#1f6b58" stroke-width="4"/>
+            <!-- ears -->
+            <path d="M826 236 C818 200 836 184 862 206 Z" fill="url(#g-tiger)"/>
+            <path d="M974 236 C982 200 964 184 938 206 Z" fill="url(#g-tiger)"/>
+            <path d="M832 226 C830 210 838 204 852 212 Z" fill="#f2a6b4"/>
+            <path d="M968 226 C970 210 962 204 948 212 Z" fill="#f2a6b4"/>
+            <!-- head -->
+            <ellipse cx="900" cy="290" rx="96" ry="84" fill="url(#g-tiger)"/>
+            <path d="M900 212 v20 M880 216 l6 18 M920 216 l-6 18" stroke="#1b2f78" stroke-width="6" stroke-linecap="round"/>
+            <path d="M806 282 h22 M808 300 h18 M994 282 h-22 M992 300 h-18" stroke="#1b2f78" stroke-width="6" stroke-linecap="round"/>
+            <!-- muzzle -->
+            <ellipse cx="900" cy="322" rx="50" ry="34" fill="#d9e6ff"/>
+            <path d="M890 306 h20 l-10 11 Z" fill="#f28aa0"/>
+            <path d="M900 317 v8 M900 325 C892 334 882 334 878 328 M900 325 C908 334 918 334 922 328" fill="none" stroke="#1b2f78" stroke-width="3" stroke-linecap="round"/>
+            <!-- the amber stare -->
+            <circle cx="860" cy="276" r="19" fill="url(#g-eye)"/>
+            <circle cx="940" cy="276" r="19" fill="url(#g-eye)"/>
+            <circle class="tiger__pupil" cx="860" cy="276" r="7.5" fill="#0a0a17"/>
+            <circle class="tiger__pupil" cx="940" cy="276" r="7.5" fill="#0a0a17"/>
+            <circle cx="864" cy="271" r="2.5" fill="#fff"/>
+            <circle cx="944" cy="271" r="2.5" fill="#fff"/>
+          </g>
+        </g>
+
+        <!-- the table -->
+        <ellipse cx="600" cy="560" rx="486" ry="118" fill="#2a190e"/>
+        <ellipse cx="600" cy="536" rx="486" ry="118" fill="url(#g-tabletop)"/>
+        <ellipse cx="600" cy="536" rx="486" ry="118" fill="none" stroke="#8f6340" stroke-width="2" opacity=".6"/>
+        <ellipse cx="600" cy="540" rx="380" ry="84" fill="none" stroke="#3d2716" stroke-width="1.5" opacity=".5"/>
+
+        <!-- what each reader keeps on the table -->
+        <g class="prop" data-seat="hat">
+          <path d="M330 512 L408 488" stroke="#9a6b40" stroke-width="7" stroke-linecap="round"/>
+          <path d="M330 512 L352 505" stroke="#2a190e" stroke-width="8" stroke-linecap="round"/>
+          <circle cx="410" cy="487" r="4" fill="#f5dc9a"/>
+        </g>
+        <g class="prop" data-seat="iching">
+          <g fill="#b9853a" stroke="#8a5f22" stroke-width="2">
+            <ellipse cx="560" cy="578" rx="17" ry="8"/><ellipse cx="600" cy="588" rx="17" ry="8"/><ellipse cx="640" cy="578" rx="17" ry="8"/>
+          </g>
+          <g fill="#2a190e">
+            <rect x="556" y="576" width="8" height="4"/><rect x="596" y="586" width="8" height="4"/><rect x="636" y="576" width="8" height="4"/>
+          </g>
+        </g>
+        <g class="prop" data-seat="saju">
+          <rect x="838" y="500" width="54" height="34" rx="2" fill="#f0f4fb" transform="rotate(-8 865 517)"/>
+          <path d="M838 504 L865 520 L892 496" fill="none" stroke="#9aa8c4" stroke-width="1.5" transform="rotate(-8 865 517)"/>
+          <circle cx="865" cy="519" r="5" fill="#e8503c"/>
+        </g>
+
+        <!-- candles, one per reader -->
+        <g class="candle" data-seat="hat" transform="translate(212 470)">
+          <circle class="candle__halo" cx="0" cy="-58" r="54" fill="url(#g-glow)"/>
+          <rect x="-8" y="-40" width="16" height="48" rx="3" fill="#efe2c4"/>
+          <ellipse cx="0" cy="-40" rx="8" ry="3" fill="#fff6dc"/>
+          <path class="candle__flame" d="M0 -66 C7 -56 7 -47 0 -43 C-7 -47 -7 -56 0 -66 Z" fill="#ffd36b"/>
+        </g>
+        <g class="candle" data-seat="iching" transform="translate(500 560)">
+          <circle class="candle__halo" cx="0" cy="-58" r="54" fill="url(#g-glow)"/>
+          <rect x="-8" y="-40" width="16" height="48" rx="3" fill="#efe2c4"/>
+          <ellipse cx="0" cy="-40" rx="8" ry="3" fill="#fff6dc"/>
+          <path class="candle__flame" d="M0 -66 C7 -56 7 -47 0 -43 C-7 -47 -7 -56 0 -66 Z" fill="#ffd36b"/>
+        </g>
+        <g class="candle" data-seat="saju" transform="translate(988 470)">
+          <circle class="candle__halo" cx="0" cy="-58" r="54" fill="url(#g-glow)"/>
+          <rect x="-8" y="-40" width="16" height="48" rx="3" fill="#efe2c4"/>
+          <ellipse cx="0" cy="-40" rx="8" ry="3" fill="#fff6dc"/>
+          <path class="candle__flame" d="M0 -66 C7 -56 7 -47 0 -43 C-7 -47 -7 -56 0 -66 Z" fill="#ffd36b"/>
+        </g>
+      </svg>
+    </div>
+
+    <nav class="plates" aria-label="Choose a reader">
+      <a class="plate plate--hat" data-seat="hat" href="/sorting-hat/">
+        <span class="plate__script" aria-hidden="true">✦ ✦ ✦</span>
+        <span class="plate__name">The Sorting Hat</span>
+        <span class="plate__line">Give it your birthday and the stars choose your house, and the wand that has been waiting for you.</span>
+        <span class="plate__by">Kept by Mrunali</span>
+      </a>
+      <a class="plate plate--iching" data-seat="iching" href="/oracle/">
+        <span class="plate__script" lang="zh-Hans">易经</span>
+        <span class="plate__name">The Three Coins Oracle</span>
+        <span class="plate__line">Hold a question, toss three coins six times, and read the hexagram they make.</span>
+        <span class="plate__by">Kept by Grace</span>
+      </a>
+      <a class="plate plate--saju" data-seat="saju" href="/korean-saju/">
+        <span class="plate__script" lang="ko">사주팔자</span>
+        <span class="plate__name">The Four Pillars</span>
+        <span class="plate__line">The exact moment you were born, as eight characters, read aloud by a blue tiger.</span>
+        <span class="plate__by">Kept by Haemin</span>
+      </a>
+    </nav>
+
+    <footer class="hall__footer">Built by Haemin, Mrunali and Grace · for entertainment only</footer>
+  </main>
+</body>
+</html>

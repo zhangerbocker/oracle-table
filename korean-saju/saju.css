@@ -13,12 +13,12 @@
 
 .saju {
   /* 흑 — ground */
-  --saju-ink: #070a11;
-  --saju-ink-2: #0d131f;
-  --saju-panel: #121a2a;
-  --saju-panel-2: #182236;
-  --saju-line: #24304a;
-  --saju-line-soft: #1b2436;
+  --saju-ink: #0a0a17;
+  --saju-ink-2: #100f20;
+  --saju-panel: #16182c;
+  --saju-panel-2: #1c1f35;
+  --saju-line: #2a2d4a;
+  --saju-line-soft: #1e2138;
 
   /* 청 — the tiger's fur */
   --saju-cyan: #35c7ef;
