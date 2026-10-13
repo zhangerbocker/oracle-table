@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Psychic Sorting Hat</title>
+  <meta name="description" content="Enter your birthday and let the stars sort you into your house and choose your wand." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎩</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="sky" aria-hidden="true"></div>
+  <div class="candles" aria-hidden="true">
+    <span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <main id="app">
+    <!-- 1. Welcome -->
+    <section class="screen is-active" id="screen-welcome" aria-labelledby="welcome-title">
+      <div class="hat" aria-hidden="true">🎩</div>
+      <h1 id="welcome-title">The Psychic Sorting Hat</h1>
+      <p class="lede">The stars were watching the day you were born. Tell the Hat your birthday, and it will read your fate: your house, and the wand that has been waiting for you.</p>
+      <button class="btn btn-primary" data-go="screen-birth">Step up to the stool</button>
+    </section>
+
+    <!-- 2. Birth date -->
+    <section class="screen" id="screen-birth" aria-labelledby="birth-title">
+      <h2 id="birth-title">When were you born?</h2>
+      <p class="lede">The Hat only needs the day the stars first saw you.</p>
+      <form id="birth-form" class="card" novalidate>
+        <label for="birth-date">Birth date</label>
+        <input type="date" id="birth-date" name="birth-date" required min="1900-01-01" />
+        <p class="error" id="birth-error" role="alert"></p>
+        <p class="sign-preview" id="sign-preview" aria-live="polite"></p>
+        <div class="actions">
+          <button type="submit" class="btn btn-primary" name="mode" value="sort">Sort me now</button>
+          <button type="submit" class="btn btn-ghost" name="mode" value="quiz">Answer a few questions for a truer sorting</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- 3. Optional quiz -->
+    <section class="screen" id="screen-quiz" aria-labelledby="quiz-title">
+      <p class="progress" id="quiz-progress"></p>
+      <h2 id="quiz-title"></h2>
+      <div class="options" id="quiz-options" role="group" aria-labelledby="quiz-title"></div>
+      <button class="btn btn-link" id="quiz-skip">Skip the rest. Sort me now</button>
+    </section>
+
+    <!-- 4. Sorting -->
+    <section class="screen" id="screen-sorting" aria-live="polite" aria-labelledby="thinking-line">
+      <div class="hat hat-thinking" aria-hidden="true">🎩</div>
+      <p class="thinking" id="thinking-line"></p>
+    </section>
+
+    <!-- 5. Result -->
+    <section class="screen" id="screen-result" aria-labelledby="result-house">
+      <article class="scroll" id="result-card">
+        <p class="kicker" id="result-confidence"></p>
+        <div class="crest" id="result-crest" aria-hidden="true"></div>
+        <h2 class="house-name" id="result-house"></h2>
+        <p class="tagline" id="result-tagline"></p>
+
+        <p class="badge" id="result-sign"></p>
+
+        <h3 class="title" id="result-title"></h3>
+        <p class="prophecy" id="result-prophecy"></p>
+
+        <div class="wand">
+          <h3>Your wand</h3>
+          <div class="wand-picture" id="result-wand-art"></div>
+          <p class="wand-spec" id="result-wand"></p>
+          <p class="wand-lore" id="result-wand-lore"></p>
+          <a class="shop-link" id="result-shop" target="_blank" rel="noopener noreferrer">
+            🪄 Shop for a wand like yours <span aria-hidden="true">↗</span>
+            <span class="visually-hidden">(opens harrypottershop.com in a new tab)</span>
+          </a>
+        </div>
+
+        <p class="source" id="result-source"></p>
+      </article>
+      <div class="actions">
+        <button class="btn btn-primary" id="again">Sort someone else</button>
+        <button class="btn btn-ghost" id="retake-quiz">Answer the questions</button>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    Fan-made for fun. Not affiliated with Warner Bros. or J.K. Rowling. Your birthday never leaves your browser.
+  </footer>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
