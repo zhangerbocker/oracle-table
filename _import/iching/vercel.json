@@ -1,0 +1,15 @@
+{
+  "functions": {
+    "api/oracle.js": {
+      "includeFiles": "oracle/**"
+    }
+  },
+  "routes": [
+    { "src": "^/dev\\.js$", "status": 404 },
+    { "src": "^/test(/.*)?$", "status": 404 },
+    { "src": "^/package\\.json$", "status": 404 },
+    { "src": "^/vercel\\.json$", "status": 404 },
+    { "src": "^/\\.gitignore$", "status": 404 },
+    { "src": "^/\\.env.*$", "status": 404 }
+  ]
+}

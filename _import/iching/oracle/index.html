@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Three Coins Oracle</title>
+  <meta name="description" content="Ask a question, toss three coins six times, and receive an I Ching reading.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Inter:wght@400;500;600&display=swap">
+  <!-- Where the readings come from. Change it if your app serves the API somewhere else. -->
+  <meta name="oracle-api" content="/api/oracle">
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <div class="top">
+    <span class="eyebrow"><span lang="zh-Hans">易经</span> · I Ching</span>
+  </div>
+
+  <main class="wrap">
+    <section class="intro">
+      <p class="kicker" lang="zh-Hans">三枚铜钱</p>
+      <h1>The Three Coins <em>Oracle</em></h1>
+      <p class="lede">Hold a question in mind. Toss three coins six times, and the lines you cast form one of the sixty-four hexagrams of the I Ching.</p>
+    </section>
+
+    <form id="ask" class="ask">
+      <label for="question" class="sr-only">Your question</label>
+      <input id="question" maxlength="300" autocomplete="off"
+             placeholder="What should I focus on this season?">
+      <button type="submit" class="btn">Begin</button>
+      <button type="button" class="info-btn" popovertarget="info-iching" aria-label="What is the I Ching, and how do the coins work?">i</button>
+    </form>
+
+    <section id="cast" class="cast" hidden>
+      <div class="cast-grid">
+        <div class="stage-wrap">
+          <div id="stage" class="stage"></div>
+          <p id="status" class="status" aria-live="polite">Toss 1 of 6</p>
+          <div class="controls">
+            <button id="toss" class="btn" type="button">Toss the coins</button>
+          </div>
+          <p class="hint hint-key">Tip: press <kbd>space</kbd> to toss</p>
+        </div>
+        <div class="hex-panel">
+          <p class="panel-label">Your hexagram
+            <button type="button" class="info-btn" popovertarget="info-reading" aria-label="How to read your hexagram">i</button>
+          </p>
+          <ol id="lines" class="lines" aria-label="Cast lines, bottom first"></ol>
+          <ul class="key" aria-label="Key">
+            <li><span class="k-line" aria-hidden="true"><i></i></span>Solid: yang, strong and active</li>
+            <li><span class="k-line" aria-hidden="true"><i></i><i></i></span>Broken: yin, yielding and receptive</li>
+            <li><span class="k-line chg" aria-hidden="true"><i></i></span>Red: a changing line, about to flip into its opposite</li>
+            <li><span class="k-mark" aria-hidden="true">○</span>Three heads: yang turning to yin</li>
+            <li><span class="k-mark" aria-hidden="true">✕</span>Three tails: yin turning to yang</li>
+          </ul>
+          <p class="key-note">The small number beside each line is the coin total (6 to 9).</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="result" class="result" hidden>
+      <div id="hexcards" class="hexcards"></div>
+      <article id="reading" class="reading" aria-live="polite"></article>
+
+      <form id="followup" class="ask followup" hidden>
+        <label for="followup-input" class="sr-only">Ask a follow-up</label>
+        <input id="followup-input" maxlength="500" autocomplete="off" placeholder="Ask a follow-up…">
+        <button type="submit" class="btn">Ask</button>
+      </form>
+      <p id="followup-note" class="hint"></p>
+
+      <details id="details" class="details" hidden>
+        <summary>Learn more about the hexagrams</summary>
+        <div id="builtin" class="reading builtin"></div>
+      </details>
+
+      <div class="again">
+        <button id="again" class="btn btn-ghost" type="button">↺ Cast again</button>
+      </div>
+    </section>
+
+    <p class="fine">For reflection and fun, not fortune-telling advice.</p>
+  </main>
+
+  <!-- Info cards, opened by the round "i" buttons -->
+  <div id="info-iching" class="info" popover>
+    <button type="button" class="info-close" popovertarget="info-iching" popovertargetaction="hide" aria-label="Close">×</button>
+    <p class="kicker" lang="zh-Hans">易经</p>
+    <h2>What is the I Ching?</h2>
+    <p>The I Ching, or <em>Book of Changes</em>, is a Chinese classic about 3,000 years old. It describes 64 situations, called hexagrams. Each is a stack of six lines, and each line is either <strong>yang</strong> (solid: strong, active) or <strong>yin</strong> (broken: yielding, receptive).</p>
+    <p>People have long used it as a mirror: you hold a question in mind, cast a hexagram, and read it as a lens on your situation. It doesn't predict the future. It gives you a new angle to think from.</p>
+    <h3>How the coin toss works</h3>
+    <p>Each toss of three coins builds one line, from the bottom up. Heads count as 3 and tails as 2, so a toss adds up to 6, 7, 8 or 9:</p>
+    <ul>
+      <li><strong>7</strong> (one head): a solid yang line</li>
+      <li><strong>8</strong> (two heads): a broken yin line</li>
+      <li><strong>9</strong> (three heads): yang so strong it's turning to yin, marked ○</li>
+      <li><strong>6</strong> (three tails): yin so deep it's turning to yang, marked ✕</li>
+    </ul>
+    <p>Six tosses give you six lines and your hexagram. The 9s and 6s are the rare ones (1 toss in 8 each). They are <em>changing lines</em>, and they show where your situation is in motion.</p>
+  </div>
+
+  <div id="info-reading" class="info" popover>
+    <button type="button" class="info-close" popovertarget="info-reading" popovertargetaction="hide" aria-label="Close">×</button>
+    <p class="kicker" lang="zh-Hans">读卦</p>
+    <h2>How to read your hexagram</h2>
+    <h3>The lines</h3>
+    <p>Lines are read from the bottom up, like a plant growing. Solid black lines are yang, broken black lines are yin. A <strong>red</strong> line is a changing line: a 9 (three heads, marked ○) or a 6 (three tails, marked ✕) that has reached its extreme and is about to flip.</p>
+    <h3>Present and Becoming</h3>
+    <p>Your six lines form the <strong>Present</strong> hexagram: the situation as it stands. If any lines are changing, flip each one (yang to yin, yin to yang) and you get a second hexagram, <strong>Becoming</strong>: where things are heading. With no changing lines, the situation is settled and one hexagram speaks on its own.</p>
+    <h3>The changing lines</h3>
+    <p>Each changing line points to the part of the situation that's moving. Position matters: line 1 is the beginning, the first stirrings; line 2 is your everyday, private ground; line 3 is the threshold between inner and outer; line 4 is where you meet the wider world; line 5 is the seat of influence, where your own choices weigh most; and line 6 is the summit, where things complete and tip into what comes next.</p>
+    <h3>The two trigrams</h3>
+    <p>Every hexagram is two three-line trigrams stacked: the lower one is the inner side of things, the upper one the outer. Each trigram has an image (Heaven, Earth, Thunder, Water, Mountain, Wind, Fire or Lake), which is why the cards say things like "Water over Thunder."</p>
+    <h3>The interpretation</h3>
+    <p>An AI reads your hexagram, its changing lines and your question together, in plain language, and you can ask follow-ups. The traditional-style text for each hexagram is under "Learn more about the hexagrams." Take what resonates and leave the rest.</p>
+  </div>
+</body>
+</html>
