@@ -21,7 +21,7 @@ import { describeBalance, describeStrength, chartScore } from './data/chart-note
 
 const PILLAR_LABELS = { year: 'Year', month: 'Month', day: 'Day', hour: 'Hour' };
 
-const DUFFY_URL = new URL('../Duffy_image.webp', import.meta.url).href;
+const DUFFY_URL = new URL('./assets/duffy.webp', import.meta.url).href;
 
 /** Where the letter sits on the tiger's tongue, measured off the image. */
 const LETTER_BOX = { left: 43.26, top: 74.61, width: 13.36, height: 12.43 };

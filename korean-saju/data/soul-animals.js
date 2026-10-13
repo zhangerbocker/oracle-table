@@ -21,7 +21,7 @@
  */
 export const SHEETS = {
   1: {
-    url: new URL('../../soul animals.png', import.meta.url).href,
+    url: new URL('../assets/soul-animals.png', import.meta.url).href,
     width: 1536,
     height: 1024,
     cols: [[0,189],[192,381],[385,574],[578,766],[770,958],[962,1151],[1155,1343],[1347,1535]],
@@ -30,7 +30,7 @@ export const SHEETS = {
     rows: [[0,189],[192,383],[386,575],[579,769],[772,962]],
   },
   2: {
-    url: new URL('../../soul animals2.png', import.meta.url).href,
+    url: new URL('../assets/soul-animals-2.png', import.meta.url).href,
     width: 1536,
     height: 1024,
     cols: [[0,220],[225,437],[443,656],[662,876],[881,1099],[1104,1317],[1323,1535]],

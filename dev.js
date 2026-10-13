@@ -1,13 +1,14 @@
-// dev.js — local server for the Three Coins Oracle. No packages; Node 20 or later.
-// Serves the page at /oracle/, routes POST /api/oracle to api/oracle.js,
-// and answers 404 for everything that must stay private.
+// dev.js — local server for the Oracle Table. Node 22 or later.
+// Serves the table at / and each oracle's page, routes the three POST APIs to their
+// handlers in api/, and answers 404 for everything that must stay private.
 
-const fs = require('fs');
-const http = require('http');
-const path = require('path');
+import fs from 'node:fs';
+import http from 'node:http';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const ROOT = __dirname;
-const MAX_BODY = 64 * 1024; // bytes; a question plus up to six follow-ups
+const ROOT = path.dirname(fileURLToPath(import.meta.url));
+const MAX_BODY = 128 * 1024; // bytes; an I Ching question with follow-ups, or a saju chart
 
 // ---------- .env.local, read line by line ----------
 
@@ -29,8 +30,11 @@ function loadEnvLocal() {
 }
 
 loadEnvLocal();
+// Imported after .env.local is read, so each handler sees its key.
 const HANDLERS = {
-  '/api/oracle': require('./api/oracle.js'),
+  '/api/oracle': (await import('./api/oracle.js')).default,
+  '/api/reading': (await import('./api/reading.js')).default,
+  '/api/prophecy': webHandler((await import('./api/prophecy.js')).POST),
 };
 
 // ---------- static files ----------
@@ -63,8 +67,9 @@ const TYPES = {
   '.webm': 'video/webm',
 };
 
-const BLOCKED_DIRS = new Set(['api', 'test', 'node_modules']);
-const BLOCKED_FILES = new Set(['dev.js', 'package.json', 'vercel.json']);
+const BLOCKED_DIRS = new Set(['api', 'test', 'lib', 'node_modules']);
+const BLOCKED_FILES = new Set(['dev.js', 'package.json', 'package-lock.json', 'vercel.json']);
+const BLOCKED_NESTED = ['korean-saju/test', 'korean-saju/prompts'];
 
 function notFound(res) {
   res.statusCode = 404;
@@ -84,9 +89,11 @@ function rawUrlIsForbidden(rawUrl) {
   if (lower.includes('..') || lower.includes('%2e') || lower.includes(':')) return true;
   const pathOnly = lower.split('?')[0].split('#')[0];
   if (pathOnly === '/api' || pathOnly.startsWith('/api/')) return true;
-  if (pathOnly === '/test' || pathOnly.startsWith('/test/')) return true;
+  for (const dir of ['/test', '/lib', ...BLOCKED_NESTED.map((d) => '/' + d)]) {
+    if (pathOnly === dir || pathOnly.startsWith(dir + '/')) return true;
+  }
   if (pathOnly === '/dev.js') return true;
-  if (pathOnly === '/package.json' || pathOnly === '/vercel.json') return true;
+  if (pathOnly === '/package.json' || pathOnly === '/package-lock.json' || pathOnly === '/vercel.json') return true;
   for (const segment of pathOnly.split('/')) {
     if (segment.startsWith('.')) return true; // dotfiles, including every .env file
   }
@@ -100,6 +107,8 @@ function decodedPathIsForbidden(relative) {
   if (segments.some((s) => s.startsWith('.'))) return true;
   if (BLOCKED_DIRS.has(segments[0].toLowerCase())) return true;
   if (segments.length === 1 && BLOCKED_FILES.has(segments[0].toLowerCase())) return true;
+  const joined = segments.join('/').toLowerCase();
+  if (BLOCKED_NESTED.some((d) => joined === d || joined.startsWith(d + '/'))) return true;
   return false;
 }
 
@@ -138,9 +147,33 @@ function serveStatic(req, res) {
   });
 }
 
-// ---------- shim for the Vercel-style handler ----------
+// ---------- shims for the Vercel-style handlers ----------
+
+// The saju handler uses Vercel's res.status(...).json(...) helpers.
+function addVercelHelpers(res) {
+  res.status = (code) => { res.statusCode = code; return res; };
+  res.json = (body) => { json(res, res.statusCode, body); return res; };
+}
+
+// The Sorting Hat's handler is Web-style: POST(Request) -> Response.
+function webHandler(post) {
+  return async (req, res) => {
+    const raw = typeof req.body === 'string' ? req.body : JSON.stringify(req.body ?? '');
+    const request = new Request('http://localhost' + req.url, {
+      method: 'POST',
+      headers: { 'content-type': req.headers['content-type'] || 'application/json',
+        'x-forwarded-for': req.socket.remoteAddress || '' },
+      body: raw,
+    });
+    const response = await post(request);
+    res.statusCode = response.status;
+    response.headers.forEach((value, name) => res.setHeader(name, value));
+    res.end(Buffer.from(await response.arrayBuffer()));
+  };
+}
 
 function apiShim(req, res, handler) {
+  addVercelHelpers(res);
   const declared = Number(req.headers['content-length'] || 0);
   if (declared > MAX_BODY) return refuseOversized(req, res);
 
@@ -204,12 +237,15 @@ function start() {
 }
 
 server.on('listening', () => {
-  const key = process.env.PARLEY_API_KEY ? 'Parley key found'
-    : process.env.ANTHROPIC_API_KEY ? 'Anthropic key found'
-    : 'no key found — readings use the built-in text; add PARLEY_API_KEY or ANTHROPIC_API_KEY to .env.local';
+  const env = process.env;
+  const has = (...names) => (names.some((n) => env[n]) ? 'key found' : 'no key');
   console.log(
-    'Three Coins Oracle: http://localhost:' + port + '/oracle/  (' + key + ')' +
-    (fellBackTo3001 ? ' — port 3000 was busy — using 3001' : '')
+    'The Oracle Table: http://localhost:' + port + '/' +
+    (fellBackTo3001 ? '  (port 3000 was busy, using 3001)' : '') + '\n' +
+    '  I Ching      /oracle/       ' + has('ORACLE_PARLEY_API_KEY', 'PARLEY_API_KEY', 'ANTHROPIC_API_KEY') + '\n' +
+    '  Sorting Hat  /sorting-hat/  ' + has('SORTING_HAT_PARLEY_API_KEY', 'ANTHROPIC_API_KEY') + '\n' +
+    '  Saju         /korean-saju/  ' + has('SAJU_PARLEY_API_KEY', 'ANTHROPIC_API_KEY') + '\n' +
+    'Oracles without a key use their built-in text; keys go in .env.local (see .env.example).'
   );
 });
 

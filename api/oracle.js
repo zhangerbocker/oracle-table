@@ -1,6 +1,7 @@
 // api/oracle.js — the Three Coins Oracle's interpretation. Vercel-style (req, res); also used by dev.js.
-// Calls Claude with whichever key is set: PARLEY_API_KEY (MIT's Parley, an Anthropic-compatible
-// proxy) wins, else ANTHROPIC_API_KEY (the Anthropic API directly). Without either it answers
+// Calls Claude with whichever key is set: ORACLE_PARLEY_API_KEY (this oracle's own key for MIT's
+// Parley, an Anthropic-compatible proxy) or PARLEY_API_KEY wins, else ANTHROPIC_API_KEY (the
+// Anthropic API directly). Without any it answers
 // 503 and the page falls back to the built-in readings. The model is ORACLE_MODEL if set, else
 // PARLEY_MODEL (Parley only), else claude-sonnet-4-6. The cast itself is recomputed here from the
 // six line values, using the same code the page uses (oracle/cast.js), so a visitor can't tell
@@ -172,8 +173,9 @@ function validHistory(history) {
 // Parley if its key is set, else the Anthropic API, else null (not configured).
 function pickProvider() {
   const env = process.env;
-  if (env.PARLEY_API_KEY) {
-    return { name: 'Parley', url: PARLEY_URL, key: env.PARLEY_API_KEY,
+  const parleyKey = env.ORACLE_PARLEY_API_KEY || env.PARLEY_API_KEY;
+  if (parleyKey) {
+    return { name: 'Parley', url: PARLEY_URL, key: parleyKey,
       model: env.ORACLE_MODEL || env.PARLEY_MODEL || DEFAULT_MODEL };
   }
   if (env.ANTHROPIC_API_KEY) {
@@ -187,7 +189,7 @@ const DECLINE = 'The coins blur on that one, and the oracle would rather not say
 
 // ---------- handler ----------
 
-async function handler(req, res) {
+export default async function handler(req, res) {
   if (req.method !== 'POST') {
     res.setHeader('allow', 'POST');
     return send(res, 405, { error: 'method not allowed' });
@@ -253,6 +255,3 @@ async function handler(req, res) {
 
   return send(res, 200, { answer: text });
 }
-
-module.exports = handler;
-module.exports.default = handler;

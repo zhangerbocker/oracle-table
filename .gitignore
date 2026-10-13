@@ -1,0 +1,14 @@
+node_modules/
+.vercel/
+.DS_Store
+
+# Never commit keys.
+.env
+.env.*
+!.env.example
+
+# The saju reader's local reading cache.
+.cache/
+
+# Per-machine Claude Code permissions.
+.claude/settings.local.json

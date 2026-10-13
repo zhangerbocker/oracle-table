@@ -11,9 +11,9 @@
  * Parley (MIT's gateway) speaks the Anthropic Messages API, so this is a plain
  * fetch with no SDK and no dependencies to install.
  *
- * Required environment variables:
- *   ANTHROPIC_API_KEY   the Parley key (sk-parley-v1-...)
- *   ANTHROPIC_BASE_URL  https://parley.api.mit.edu
+ * Environment variables:
+ *   SAJU_PARLEY_API_KEY this reader's own Parley key (sk-parley-v1-...), or else
+ *   ANTHROPIC_API_KEY + ANTHROPIC_BASE_URL
  *   READING_MODEL       optional, defaults to claude-sonnet-5
  */
 
@@ -92,13 +92,17 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Body must be a computed chart payload.' });
   }
 
-  const apiKey = cleanEnv(process.env.ANTHROPIC_API_KEY);
-  const baseUrl = (cleanEnv(process.env.ANTHROPIC_BASE_URL) || 'https://api.anthropic.com')
-    .replace(/\/+$/, '');
+  // The saju reader's own Parley key wins; otherwise the shared ANTHROPIC_* pair.
+  const sajuKey = cleanEnv(process.env.SAJU_PARLEY_API_KEY);
+  const apiKey = sajuKey || cleanEnv(process.env.ANTHROPIC_API_KEY);
+  const baseUrl = (sajuKey
+    ? 'https://parley.api.mit.edu'
+    : cleanEnv(process.env.ANTHROPIC_BASE_URL) || 'https://api.anthropic.com'
+  ).replace(/\/+$/, '');
 
   if (!apiKey) {
     return res.status(500).json({
-      error: 'Server is missing ANTHROPIC_API_KEY. Set it in the Vercel project environment.',
+      error: 'Server is missing SAJU_PARLEY_API_KEY. Set it in the Vercel project environment.',
     });
   }
 

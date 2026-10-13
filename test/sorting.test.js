@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { parseBirthDate, getZodiac, sort, wandLength, fallbackReading } from "../public/sorting.js";
+import { parseBirthDate, getZodiac, sort, wandLength, fallbackReading } from "../sorting-hat/sorting.js";
 
 test("zodiac boundaries", () => {
   const cases = [
