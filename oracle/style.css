@@ -20,21 +20,12 @@
   --cjk-sans: "PingFang SC", "Noto Sans SC", "Source Han Sans SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
   --cjk-serif: "Songti SC", "Noto Serif SC", "Source Han Serif SC", "STSong", "SimSun", serif;
 
-  /* Character + coins */
-  --c-skin: #F8E6D6;
-  --c-hair: #0B0907;
-  --c-robe: #C23B22;
-  --c-robe-dk: #9A2C17;
-  --c-collar: #F1E7D3;
-  --c-cushion: #C99A3E;
-  --c-mat: rgba(241, 231, 211, .06);
-  --c-blush: #E2735D;
-  --c-pin: #E3B95C;
+  /* Coins */
   --bronze: #B9853A;
   --bronze-dk: #8A5F22;
   --bronze-lt: #E0B66B;
 
-  /* Candle glow behind the page, shared with the table and the Sorting Hat */
+  /* Candle glow behind the page */
   --glow: rgba(227, 185, 92, .10);
   color-scheme: dark;
 }
@@ -44,7 +35,6 @@
   --ink: #1B1916; --ink-2: #423D36; --muted: #766E62;
   --line: rgba(27, 25, 22, .14); --line-soft: rgba(27, 25, 22, .07);
   --accent: #C23B22; --accent-dk: #9A2C17; --accent-sf: #F3DCD2;
-  --c-hair: #1B1916; --c-collar: #FBF7EF; --c-mat: rgba(27, 25, 22, .07); --c-pin: #C99A3E;
   --glow: transparent;
   color-scheme: light;
 }
@@ -76,6 +66,7 @@ body {
   color: var(--muted); text-decoration: none; padding: 6px 8px; border-radius: 6px;
 }
 .table-back:hover, .table-back:focus-visible { color: var(--ink); background: var(--line-soft); }
+@media (max-width: 640px) { .top { padding-top: 56px; } }
 .eyebrow, .kicker, .panel-label {
   font: 12px/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--accent);
 }
@@ -126,35 +117,27 @@ h1 em { color: var(--accent); }
 @media (min-width: 760px) { .cast-grid { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); } }
 
 .stage-wrap { text-align: center; }
-.stage { position: relative; width: 100%; max-width: 420px; margin: 0 auto; aspect-ratio: 320 / 260; }
+.stage { position: relative; width: 100%; max-width: 360px; margin: 0 auto; aspect-ratio: 320 / 360; }
 .status { font: 13px/1 var(--mono); color: var(--muted); letter-spacing: .08em; margin: 8px 0 14px; }
 .controls { display: flex; gap: 8px; justify-content: center; }
 .hint { font-size: 13px; color: var(--muted); text-align: center; margin: 12px 0 0; }
 kbd { font: 12px var(--mono); border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 4px; padding: 1px 5px; }
 @media (hover: none) { .hint-key { display: none; } }
 
-/* Character */
-.chibi { width: 100%; height: 100%; display: block; overflow: visible; }
-.c-mat { fill: var(--c-mat); }
-.c-cushion { fill: var(--c-cushion); }
-.c-robe { fill: var(--c-robe); }
-.c-sleeve { stroke: var(--c-robe-dk); stroke-width: 1.5; }
-.c-collar { fill: none; stroke: var(--c-collar); stroke-width: 5; stroke-linejoin: round; stroke-linecap: round; }
-.c-skin { fill: var(--c-skin); }
-.c-hair { fill: var(--c-hair); }
-.c-pin { stroke: var(--c-pin); stroke-width: 3; stroke-linecap: round; }
-.c-pin-bead { fill: var(--accent); }
-.c-ink { fill: #2B2420; }
-.c-shine { fill: #fff; }
-.c-blush { fill: var(--c-blush); opacity: .55; }
-.c-mouth, .c-hand-line { fill: none; stroke: #2B2420; stroke-width: 2.4; stroke-linecap: round; }
-.c-hand-line { stroke: #D9AE93; stroke-width: 1.6; }
+/* Character: the drawing sits in the top of the stage; the coins land below her mat */
+.oracle-fig {
+  position: absolute; left: 18%; top: 2%; width: 64%;
+  transform-origin: 50% 100%;
+}
+.fig-breathe { position: relative; transform-origin: 50% 100%; animation: breathe 3.2s ease-in-out infinite; }
+.oracle-fig img { display: block; width: 100%; height: auto; user-select: none; }
+/* the arms layer's box inside the 808 × 1161 drawing: x 241, y 834, 329 wide */
+.oracle-fig .fig-arms { position: absolute; left: 29.83%; top: 71.83%; width: 40.72%; transform-origin: 50% 100%; }
+.fig-overlay { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
 .c-bubble { fill: var(--card); stroke: var(--accent); stroke-width: 2; }
 .c-bubble-text { font: 700 24px var(--display); fill: var(--accent); }
-#chibi-body { animation: breathe 3.2s ease-in-out infinite; }
-#chibi-body, #chibi-arms, #chibi-eyes, #chibi-head, #chibi-bubble { transform-box: fill-box; transform-origin: 50% 100%; }
-#chibi-eyes { transform-origin: 50% 50%; }
-@keyframes breathe { 50% { transform: translateY(1.5px) scaleY(.99); } }
+#fig-bubble { transform-box: fill-box; transform-origin: 0% 100%; }
+@keyframes breathe { 50% { transform: translateY(1px) scaleY(.993); } }
 
 /* Coins */
 .coin {

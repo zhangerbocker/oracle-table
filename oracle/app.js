@@ -1,6 +1,6 @@
 import { tossCoins, readCast, LINE_INFO } from "./cast.js";
 import { LINE_POSITIONS } from "./hexagrams.js";
-import { CHIBI_SVG, coinHTML } from "./chibi.svg.js";
+import { FIGURE_HTML, coinHTML } from "./figure.js";
 
 // true: Claude (through Parley, see api/oracle.js) writes an interpretation of each cast,
 // visitors can ask follow-ups, and the built-in reading folds away under "Learn more".
@@ -22,16 +22,15 @@ let state = null; // { question, lines, history, busy, autoCasting, followups }
 
 // ---------- Stage setup ----------
 
-els.stage.innerHTML = CHIBI_SVG + [0, 1, 2].map(coinHTML).join("");
+els.stage.innerHTML = FIGURE_HTML + [0, 1, 2].map(coinHTML).join("");
 const coins = [...els.stage.querySelectorAll(".coin")];
 const part = (id) => els.stage.querySelector(`#${id}`);
-const chibi = {
-  arms: part("chibi-arms"), head: part("chibi-head"), eyes: part("chibi-eyes"),
-  smile: part("chibi-smile"), gasp: part("chibi-gasp"), bubble: part("chibi-bubble"), body: part("chibi-body"),
-};
+const fig = { body: part("fig"), arms: part("fig-arms"), lids: part("fig-lids"), gasp: part("fig-gasp"), bubble: part("fig-bubble") };
 
+// Stage fractions: where the coins land (in front of the mat) and where her cupped hands are.
 const LAND_X = [0.27, 0.5, 0.73];
-const HAND = { x: 0.5, y: 0.72 };
+const LAND_Y = 0.93;
+const HAND = { x: 0.49, y: 0.65 };
 
 function coinTransform(coin, x, y, scale = 1) {
   const r = els.stage.getBoundingClientRect();
@@ -40,7 +39,7 @@ function coinTransform(coin, x, y, scale = 1) {
 }
 
 function placeCoin(coin, i) {
-  coin.style.transform = coinTransform(coin, LAND_X[i], 0.9);
+  coin.style.transform = coinTransform(coin, LAND_X[i], LAND_Y);
 }
 addEventListener("resize", () => coins.forEach((c, i) => c.style.opacity !== "" && placeCoin(c, i)));
 
@@ -53,8 +52,8 @@ addEventListener("resize", () => coins.forEach((c, i) => c.style.opacity !== "" 
 })();
 
 function blink() {
-  return chibi.eyes.animate(
-    [{ transform: "scaleY(1)" }, { transform: "scaleY(.1)" }, { transform: "scaleY(1)" }],
+  return fig.lids.animate(
+    [{ opacity: 0 }, { opacity: 1, offset: 0.2 }, { opacity: 1, offset: 0.8 }, { opacity: 0 }],
     { duration: 180 },
   ).finished;
 }
@@ -82,26 +81,22 @@ async function animateToss(result) {
   setExpression("neutral");
 
   // Shake, shake, shake…
-  await chibi.arms.animate(
+  await fig.arms.animate(
     [0, -4, 4, -4, 4, -3, 3, 0].map((x, k) => ({ transform: `translate(${x}px, ${k % 2 ? -2 : 0}px)` })),
     { duration: 620, easing: "ease-in-out" },
   ).finished;
 
   // …and flick!
-  chibi.arms.animate(
-    [{ transform: "translateY(0) scaleY(1)" }, { transform: "translateY(-22px) scaleY(1.06)", offset: 0.35 }, { transform: "translateY(0) scaleY(1)" }],
+  fig.arms.animate(
+    [{ transform: "translateY(0) scaleY(1)" }, { transform: "translateY(-12px) scaleY(1.06)", offset: 0.35 }, { transform: "translateY(0) scaleY(1)" }],
     { duration: 520, easing: "cubic-bezier(.2,.8,.3,1)" },
-  );
-  chibi.head.animate(
-    [{ transform: "translateY(0)" }, { transform: "translateY(-4px)", offset: 0.35 }, { transform: "translateY(0)" }],
-    { duration: 520 },
   );
 
   const flights = coins.map((coin, i) => {
     const spin = coin.querySelector(".coin-spin");
     const duration = 1150 + i * 140;
-    const peakY = 0.06 + Math.random() * 0.08;
-    const peakX = HAND.x + (LAND_X[i] - HAND.x) * 0.55;
+    const peakY = 0.04 + Math.random() * 0.08;
+    const peakX = HAND.x + (LAND_X[i] - HAND.x) * 1.25; // the outer coins arc out around her
     const turns = 3 + i + Math.floor(Math.random() * 2);
     spin.style.transform = `rotateY(${faces[i]}deg)`;
     spin.animate(
@@ -114,9 +109,9 @@ async function animateToss(result) {
       [
         { transform: coinTransform(coin, HAND.x, HAND.y, 0.6), opacity: 0, easing: "cubic-bezier(.2,.7,.4,1)" },
         { transform: coinTransform(coin, peakX, peakY, 1.05), opacity: 1, offset: 0.42, easing: "cubic-bezier(.55,0,.85,.4)" },
-        { transform: coinTransform(coin, LAND_X[i], 0.9, 1), offset: 0.82, easing: "ease-out" },
-        { transform: coinTransform(coin, LAND_X[i], 0.86, 1), offset: 0.9, easing: "ease-in" },
-        { transform: coinTransform(coin, LAND_X[i], 0.9, 1), opacity: 1 },
+        { transform: coinTransform(coin, LAND_X[i], LAND_Y, 1), offset: 0.82, easing: "ease-out" },
+        { transform: coinTransform(coin, LAND_X[i], LAND_Y - 0.035, 1), offset: 0.9, easing: "ease-in" },
+        { transform: coinTransform(coin, LAND_X[i], LAND_Y, 1), opacity: 1 },
       ],
       { duration, delay: i * 70, fill: "backwards" },
     ).finished;
@@ -126,16 +121,15 @@ async function animateToss(result) {
 
 function setExpression(kind) {
   const surprised = kind === "surprised";
-  chibi.smile.style.opacity = surprised ? "0" : "1";
-  chibi.gasp.setAttribute("opacity", surprised ? "1" : "0");
-  chibi.bubble.setAttribute("opacity", "0");
+  fig.gasp.setAttribute("opacity", surprised ? "1" : "0");
+  fig.bubble.setAttribute("opacity", "0");
   if (reducedMotion.matches) return;
   if (surprised) {
-    chibi.bubble.setAttribute("opacity", "1");
-    chibi.bubble.animate([{ transform: "scale(0)" }, { transform: "scale(1.15)" }, { transform: "scale(1)" }], { duration: 320, easing: "ease-out" });
-    chibi.body.animate([{ transform: "translateY(0)" }, { transform: "translateY(-6px)" }, { transform: "translateY(0)" }], { duration: 300 });
+    fig.bubble.setAttribute("opacity", "1");
+    fig.bubble.animate([{ transform: "scale(0)" }, { transform: "scale(1.15)" }, { transform: "scale(1)" }], { duration: 320, easing: "ease-out" });
+    fig.body.animate([{ transform: "translateY(0)" }, { transform: "translateY(-8px)" }, { transform: "translateY(0)" }], { duration: 300 });
   } else if (kind === "happy") {
-    chibi.head.animate([{ transform: "rotate(0)" }, { transform: "rotate(-4deg)" }, { transform: "rotate(3deg)" }, { transform: "rotate(0)" }], { duration: 600 });
+    fig.body.animate([{ transform: "rotate(0)" }, { transform: "rotate(-3deg)" }, { transform: "rotate(2deg)" }, { transform: "rotate(0)" }], { duration: 600 });
   }
 }
 
